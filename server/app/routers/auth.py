@@ -14,7 +14,7 @@ router = APIRouter(
 @router.post("/signup", status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
 async def signup(user: schemas.UserCreate, db: AsyncIOMotorDatabase = Depends(get_mongo_db)):
     # Check if user already exists
-    existing_user = await db.users.find_one({"email": user.email})
+    existing_user = await db.Users.find_one({"email": user.email})
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -30,16 +30,16 @@ async def signup(user: schemas.UserCreate, db: AsyncIOMotorDatabase = Depends(ge
     user_dict["created_at"] = datetime.now()
 
     # Insert into database
-    result = await db.users.insert_one(user_dict)
+    result = await db.Users.insert_one(user_dict)
 
     # Get created user
-    created_user = await db.users.find_one({"_id": result.inserted_id})
+    created_user = await db.Users.find_one({"_id": result.inserted_id})
     return created_user
 
 
-@router.post("/login", response_model=schemas.loginResponse)
+@router.post("/login", response_model=schemas.LoginResponse)
 async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: AsyncIOMotorDatabase = Depends(get_mongo_db)):
-    user = await db.users.find_one({"email": user_credentials.username})
+    user = await db.Users.find_one({"email": user_credentials.username})
     if not user:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")
