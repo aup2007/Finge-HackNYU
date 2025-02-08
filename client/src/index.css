@@ -235,4 +235,11 @@
   }
 }
 
+.bg-main {
+  background-image: url('https://andrewma.b-cdn.net/images/bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 
