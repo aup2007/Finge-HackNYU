@@ -1,10 +1,24 @@
 from fastapi import FastAPI
-from app.routers import some_router  # Import your routers here
+from fastapi.middleware.cors import CORSMiddleware
+from .routers import auth
+# from .routers import #file names here
 
 app = FastAPI()
+origins = ["0.0.0.0/0"]
 
-# Include routers
-app.include_router(some_router.router)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include all relevant routers there like this:
+# app.include_router(post.router)
+app.include_router(auth.router)
+
 
 @app.get("/")
 def read_root():
