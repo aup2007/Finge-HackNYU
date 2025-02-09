@@ -4,7 +4,7 @@ from .routers import auth, users, data, chat
 # from .routers import #file names here
 
 app = FastAPI()
-origins = ["0.0.0.0/0"]
+origins = ["0.0.0.0/0", "http://localhost:5173"]
 
 
 app.add_middleware(
