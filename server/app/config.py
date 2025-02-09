@@ -18,7 +18,7 @@ class Settings(BaseSettings):
 
     @property
     def MONGODB_URL(self):
-        return f"mongodb+srv://{self.MONGODB_USERNAME}:{self.MONGODB_PASSWORD}@{self.MONGODB_CLUSTER}.mongodb.net"
+        return f"mongodb+srv://{self.MONGODB_USERNAME}:{self.MONGODB_PASSWORD}@{self.MONGODB_CLUSTER}.mongodb.net/?tlsAllowInvalidCertificates=true"
 
     class Config:
         env_file = ".env"
