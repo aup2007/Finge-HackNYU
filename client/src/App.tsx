@@ -1,8 +1,10 @@
 import { Route, Routes } from "react-router-dom"
-import LandingPage from "./components/landing"
-import AccountCreation from "./components/account-creation"
+import LandingPage from "./pages/landing.tsx"
+import AccountCreation from "./pages/account-creation.tsx"
 import AuthProvider from "./hooks/useAuth"
 import { useState } from "react"
+
+
 
 export default function App() {
   const [isSignedUp, setIsSignedUp] = useState(false);
@@ -14,7 +16,7 @@ export default function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<LandingPage />} />
         <Route 
           path="/account-creation" 
           element={
