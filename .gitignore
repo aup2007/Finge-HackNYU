@@ -44,6 +44,7 @@ build/
 .env
 .env.local
 .env.*.local
+!.env.example
 
 # IDE specific files
 .idea/
