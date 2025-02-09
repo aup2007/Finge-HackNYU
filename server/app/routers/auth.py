@@ -24,20 +24,25 @@ async def signup(user: OAuth2PasswordRequestForm = Depends(), db: AsyncIOMotorDa
     # Hash the password using utils
     hashed_password = utils.hash(user.password)
 
-    # Create user document
-    user_dict = user.model_dump()
-    user_dict["password"] = hashed_password
-    user_dict["created_at"] = datetime.now()
+    # Create user document manually
+    user_dict = {
+        "email": user.username,
+        "password": hashed_password,
+        "created_at": str(datetime.now()),
+        "categories": []
+    }
 
     # Insert into database
     result = await db.users.insert_one(user_dict)
 
     # Get created user
     created_user = await db.users.find_one({"_id": result.inserted_id})
+    # Convert ObjectId to str so jsonable_encoder can serialize it properly.
+    created_user["_id"] = str(created_user["_id"])
     return created_user
 
 
-@router.post("/login", response_model=schemas.loginResponse)
+@router.post("/login", response_model=schemas.LoginResponse)
 async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: AsyncIOMotorDatabase = Depends(get_mongo_db)):
     user = await db.users.find_one({"email": user_credentials.username})
     if not user:
