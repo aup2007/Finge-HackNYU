@@ -35,12 +35,16 @@ class APIClient<T> {
   };
 
   updateCategories = async (categories: string[], token: string) => {
-    const response = await axiosInstance.post<T>(this.endpoint, { categories }, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstance.post<T>(
+      this.endpoint,
+      { preferences: categories },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   };
 }
