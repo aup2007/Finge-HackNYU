@@ -6,6 +6,7 @@ import { useState } from "react";
 import LoginPage from "./pages/login.tsx";
 import StockTracker from "./pages/matches.tsx";
 import SelectionPage from "./pages/selection.tsx";
+import PrivateRoute from "./pages/PrivateRoute";
 
 export default function App() {
   const [isSignedUp, setIsSignedUp] = useState(false);
@@ -26,7 +27,9 @@ export default function App() {
           }
         />
         <Route path="/selection" element={<SelectionPage />} />
-        <Route path="/matches" element={<StockTracker />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/matches" element={<StockTracker />} />
+          </Route>
       </Routes>
     </AuthProvider>
   );
