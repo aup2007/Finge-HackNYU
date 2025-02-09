@@ -11,22 +11,19 @@ import { Logo } from "../components/ui/logo";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+
 export default function LoginPage() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const auth = useAuth();
+  const { loginAction, error } = useAuth();
   const navigate = useNavigate();
-  console.log(auth.token);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //need to get the email and password printed
     const username = usernameRef.current?.value || "";
     const password = passwordRef.current?.value || "";
     console.log("Form submitted:", { username, password });
-    auth.loginAction({ username, password });
-    console.log("ERROR:", auth.error);
-    console.log(auth.token);
-    navigate("/matches");
+    loginAction({ username, password });
   };
 
   return (
@@ -116,6 +113,11 @@ export default function LoginPage() {
                 </Button>
               </div>
             </form>
+
+            {/* Error Feedback */}
+            {error && (
+              <div className="text-red-500 text-center">{error.message}</div>
+            )}
 
             {/* Sign Up Link */}
             <div className="text-center">
