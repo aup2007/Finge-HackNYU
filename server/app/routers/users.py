@@ -65,7 +65,9 @@ async def add_liked_stock(
         {"_id": ObjectId(user_id)},
         {"$addToSet": {"likedStocks": {
             "ticker": stock.ticker,
-            "imageUrl": stock.imageUrl
+            "imageUrl": stock.imageUrl,
+            "close" : stock.close,
+            "company" : stock.company
         }}}
     )
     
@@ -75,11 +77,13 @@ async def add_liked_stock(
             detail="Failed to add stock to likes"
         )
     
-    # Fetch and return updated user
     updated_user = await db.Users.find_one({"_id": ObjectId(user_id)})
-    updated_user["id"] = str(updated_user["_id"])
-    del updated_user["_id"]
-    return {"message" : "user has been updated successfully!"}
+    if not updated_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Could not fetch updated user"
+        )
+    return {"message" : "user updated"}
 
 @router.delete("/current_user/liked-stocks/{ticker}", response_model=schemas.UserResponse)
 async def remove_liked_stock(

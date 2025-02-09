@@ -25,11 +25,16 @@ class UserCreate(BaseModel):
 class LikedStock(BaseModel):
     ticker: str
     imageUrl: str
+    company: str
+    close : float
 
 class StockLikeRequest(BaseModel):
     ticker: str
     imageUrl: str
-    
+    company: str
+    close : float
+
+
 class UserResponse(BaseModel):
     id: str
     email: EmailStr
