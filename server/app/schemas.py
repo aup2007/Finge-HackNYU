@@ -22,12 +22,20 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
 
+class LikedStock(BaseModel):
+    ticker: str
+    imageUrl: str
 
+class StockLikeRequest(BaseModel):
+    ticker: str
+    imageUrl: str
+    
 class UserResponse(BaseModel):
     id: str
     email: EmailStr
     created_at: datetime
     categories: List[str]
+    likedStocks: List[LikedStock]  # Changed from List[str] to List[LikedStock]
 
     class Config:
         json_encoders = {ObjectId: str}
@@ -77,3 +85,4 @@ class StockResponse(BaseModel):
 
 class PreferencesUpdate(BaseModel):
     categories: List[str]
+

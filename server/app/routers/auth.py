@@ -29,7 +29,8 @@ async def signup(user: OAuth2PasswordRequestForm = Depends(), db: AsyncIOMotorDa
         "email": user.username,
         "password": hashed_password,
         "created_at": str(datetime.now()),
-        "categories": []
+        "categories": [],
+        "likedStocks" : []
     }
 
     # Insert into database
