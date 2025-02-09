@@ -6,17 +6,19 @@ import { Button } from "../components/ui/button"
 import { Logo } from "../components/ui/logo"
 import { motion } from "framer-motion"
 import { useNavigate } from "react-router-dom"
+import useUpdateCategories from "../hooks/useUpdateCategories"
 
 const INDUSTRIES = [
+  { id: "tech", label: "Technology" },
+  { id: "finance", label: "Financial Services" },
   { id: "energy", label: "Energy" },
   { id: "consumer", label: "Consumer" },
-  { id: "financial", label: "Financial Services" },
-  { id: "technology", label: "Technology" },
 ]
 
 export default function SelectionPage() {
   const [selectedIndustries, setSelectedIndustries] = useState<string[]>([])
   const navigate = useNavigate()
+  const updateCategories = useUpdateCategories()
 
   const toggleIndustry = (industryId: string) => {
     setSelectedIndustries(prev => {
@@ -27,10 +29,14 @@ export default function SelectionPage() {
     })
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (selectedIndustries.length > 0) {
-      // TODO: Save selected industries and navigate to matches
-      navigate("/matches")
+      try {
+        await updateCategories.mutateAsync({ categories: selectedIndustries })
+        navigate("/matches")
+      } catch (error) {
+        console.error('Error updating categories:', error)
+      }
     }
   }
 
@@ -99,10 +105,10 @@ export default function SelectionPage() {
               <div className="flex justify-center">
                 <Button
                   onClick={handleNext}
-                  disabled={selectedIndustries.length === 0}
-                  className="w-32 rounded-xl py-4 font-['PP_Radio_Grotesk'] text-lg font-bold bg-gradient-to-r from-[#AAD8E5] to-[#7ED7CB] text-white hover:opacity-90"
+                  disabled={selectedIndustries.length === 0 || updateCategories.isPending}
+                  className="w-32 rounded-xl py-4 font-['PP_Radio_Grotesk'] text-lg font-bold bg-gradient-to-r from-[#AAD8E5] to-[#7ED7CB] text-white hover:opacity-90 disabled:opacity-50"
                 >
-                  Next
+                  {updateCategories.isPending ? "Saving..." : "Next"}
                 </Button>
               </div>
             </div>
