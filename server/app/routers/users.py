@@ -53,7 +53,7 @@ async def get_liked_stocks(
 ):
     return current_user.get("likedStocks", [])
 
-@router.post("/current_user/liked-stocks", response_model=schemas.UserResponse)
+@router.post("/current_user/liked-stocks", response_model=List[schemas.LikedStock])
 async def add_liked_stock(
     stock: schemas.StockLikeRequest,
     current_user: dict = Depends(oauth2.get_current_user),
@@ -79,7 +79,7 @@ async def add_liked_stock(
     updated_user = await db.Users.find_one({"_id": ObjectId(user_id)})
     updated_user["id"] = str(updated_user["_id"])
     del updated_user["_id"]
-    return updated_user
+    return updated_user["likedStocks"]
 
 @router.delete("/current_user/liked-stocks/{ticker}", response_model=schemas.UserResponse)
 async def remove_liked_stock(
