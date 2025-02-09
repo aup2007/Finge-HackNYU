@@ -64,10 +64,11 @@ async def add_liked_stock(
     result = await db.Users.update_one(
         {"_id": ObjectId(user_id)},
         {"$addToSet": {"likedStocks": {
+            "company" : stock.company,
             "ticker": stock.ticker,
             "imageUrl": stock.imageUrl,
             "close" : stock.close,
-            "company" : stock.company
+            "open" : stock.open
         }}}
     )
     
