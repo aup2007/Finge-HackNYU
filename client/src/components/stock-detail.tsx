@@ -2,7 +2,6 @@
 import type {
   StockWithNews,
   StockStatus,
-  StockDetailProps,
 } from "@/interfaces";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -16,11 +15,21 @@ import {
   DollarSign,
   Building,
   Loader2,
+  ArrowLeft,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion, AnimatePresence } from "framer-motion";
 import QuirksSection from "./quirks-section";
 import { useNewsArticles } from "@/hooks/useNewsArticles";
+
+interface StockDetailProps {
+  stock: StockWithNews;
+  onLike?: () => void;
+  onPass?: () => void;
+  onBack?: () => void;
+  status: StockStatus;
+  mode: 'discovery' | 'view';
+}
 
 const getQuirksForStock = (stock: StockWithNews) => {
   if (!stock.opinions) return [];
@@ -48,7 +57,9 @@ export default function StockDetail({
   stock,
   onLike,
   onPass,
+  onBack,
   status,
+  mode,
 }: StockDetailProps) {
   const { data: newsArticles, isLoading: isLoadingNews } = useNewsArticles(
     stock.symbol || ""
@@ -111,23 +122,37 @@ export default function StockDetail({
             />
           </div>
           <div className="flex gap-4">
-            <Button
-              size="lg"
-              variant="outline"
-              className="flex-1 font-['PP_Radio_Grotesk']"
-              onClick={onPass}
-            >
-              <X className="mr-2 h-5 w-5" />
-              Pass
-            </Button>
-            <Button
-              size="lg"
-              className="flex-1 font-['PP_Radio_Grotesk']"
-              onClick={onLike}
-            >
-              <Heart className="mr-2 h-5 w-5" />
-              Like
-            </Button>
+            {mode === 'discovery' ? (
+              <>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="flex-1 font-['PP_Radio_Grotesk']"
+                  onClick={onPass}
+                >
+                  <X className="mr-2 h-5 w-5" />
+                  Pass
+                </Button>
+                <Button
+                  size="lg"
+                  className="flex-1 font-['PP_Radio_Grotesk']"
+                  onClick={onLike}
+                >
+                  <Heart className="mr-2 h-5 w-5" />
+                  Like
+                </Button>
+              </>
+            ) : (
+              <Button
+                size="lg"
+                variant="outline"
+                className="flex-1 font-['PP_Radio_Grotesk']"
+                onClick={onBack}
+              >
+                <ArrowLeft className="mr-2 h-5 w-5" />
+                Back to Discovery
+              </Button>
+            )}
           </div>
         </div>
 

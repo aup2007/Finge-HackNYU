@@ -104,6 +104,34 @@ class APIClient<T> {
       )
       .then((res) => res.data);
   };
+
+  initializeChat = (ticker: string, token: string) => {
+    return axiosInstance
+      .post<T>(
+        `${this.endpoint}/${ticker}/initialize`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => res.data);
+  };
+
+  sendMessage = (ticker: string, message: string, token: string) => {
+    return axiosInstance
+      .post<T>(
+        `${this.endpoint}/${ticker}`,
+        { message },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => res.data);
+  };
 }
 
 export default APIClient;

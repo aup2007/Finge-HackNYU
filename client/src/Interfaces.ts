@@ -194,3 +194,12 @@ export interface StockDetailProps {
   onPass: () => void;
   status: StockStatus;
 }
+
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+export interface ChatResponse {
+  reply: string;
+}
