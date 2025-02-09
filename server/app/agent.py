@@ -1,8 +1,7 @@
-import os
-import openai
+from openai import OpenAI, APIError, AuthenticationError
 from .config import settings
-openai.api_key = os.getenv("DEEPSEEK_API")
 
+client = OpenAI(api_key=settings.DEEPSEEK_API, base_url="https://api.deepseek.com/v1")
 
 class LLMChatAgent:
     def __init__(self, ticker: str, initial_prompt: str = None):
@@ -24,12 +23,22 @@ class LLMChatAgent:
         self.messages.append({"role": "assistant", "content": message})
 
     def get_response(self) -> str:
-        response = openai.ChatCompletion.create(
-            model='deepseek-reasoner',
-            messages=self.messages,
-            temperature=0.7,
-            stream=False
-        )
-        reply = response.choices[0].message.content
-        self.add_assistant_message(reply)
-        return reply
+        try:
+            # Non-streaming call for API endpoint usage
+            response = client.chat.completions.create(
+                model='deepseek-reasoner',
+                messages=self.messages,
+                temperature=0.7,
+                stream=False
+            )
+            reply = response.choices[0].message.content
+            self.add_assistant_message(reply)
+            return reply
+        except AuthenticationError:
+            # Handle authentication issues with the API key
+            return "Error: Authentication failed. Check your API key."
+        except APIError as e:
+            # Handle other API errors (e.g., insufficient balance)
+            return f"API Error: {e}"
+        except Exception as e:
+            return f"Unexpected Error: {e}"
