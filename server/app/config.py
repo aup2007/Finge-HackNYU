@@ -6,7 +6,6 @@ from pydantic_settings import BaseSettings
 
 # pydantic is case insensitive but whatever
 class Settings(BaseSettings):
-    # NEED NEW VARIABLES BUT THIS IS AN EXAMPLE
     MONGODB_USERNAME: str
     MONGODB_PASSWORD: str
     MONGODB_CLUSTER: str
@@ -14,6 +13,7 @@ class Settings(BaseSettings):
     AUTH_SECRET_KEY: str
     AUTH_ALGORITHM: str
     JWT_EXPIRY_MINUTES: int
+    DEEPSEEK_API: str
     # auto parse from .env
 
     @property
