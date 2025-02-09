@@ -93,20 +93,26 @@ async def get_companies_by_preferences(
     current_user: dict = Depends(oauth2.get_current_user),
     db: AsyncIOMotorDatabase = Depends(get_mongo_db)
 ):
-    # Use the saved categories in the user document
+    # Get user categories and liked stocks
     user_categories = current_user.get("categories", [])
+    liked_tickers = [stock["ticker"] for stock in current_user.get("likedStocks", [])]
+    
     stocks = []
     for cat in user_categories:
         collection_name = valid_collections.get(cat.lower())
         if collection_name:
-            cursor = db[collection_name].find({})
+            cursor = db[collection_name].find({
+                "ticker": {"$nin": liked_tickers}
+            })
             async for stock in cursor:
                 stock["_id"] = str(stock["_id"])
                 stocks.append(stock)
+                
     if not stocks:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No stocks found matching your preferences"
         )
+        
     random.shuffle(stocks)
     return {"stocks": stocks}
