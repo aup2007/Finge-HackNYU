@@ -21,8 +21,7 @@ async def initialize_agent(
 ):
     user_id = current_user.get("user_id")
     # Create a new agent with a default system prompt including company_data.
-    initial_prompt = "You are an expert financial consultant and you will answer all questions regarding the company with the ticker provided. You will search the internet and find the required data."
-    agent = LLMChatAgent(ticker=ticker.upper(), initial_prompt=initial_prompt)
+    agent = LLMChatAgent(ticker=ticker.upper())
     agent_sessions[f"{user_id}_{ticker.upper()}"] = agent
     return {"message": f"Agent for {ticker.upper()} initialized."}
 

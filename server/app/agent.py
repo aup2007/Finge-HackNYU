@@ -11,16 +11,14 @@ class LLMChatAgent:
         # Set system message
         self.messages.append({
             "role": "system",
-            "content": "You are a knowledgeable financial assistant that provides accurate and helpful information about companies and stocks."
+            "content": f"You are a knowledgeable financial assistant that provides accurate and helpful information about companies and stocks. You will search the internet when necessary and retrieve vital and relevant quantitative metrics that will aid the user in their process of trying to indentify which stocks to buy. Your Primary Function is to help the user with the company with the following ticker : {ticker}"
         })
-        
-        # Add initial user message
+        #Initial message required to maintain the alternating pattern
         self.messages.append({
-            "role": "user", 
-            "content": initial_prompt if initial_prompt else f"Tell me about {ticker} company's business model and recent performance."
+            "role": "user",
+            "content": f"Tell me about {ticker}'s business model and recent performance."
         })
         
-        # Get initial assistant response to maintain alternating pattern
         try:
             response = client.chat.completions.create(
                 model='sonar-reasoning',
