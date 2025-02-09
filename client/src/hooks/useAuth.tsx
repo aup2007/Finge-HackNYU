@@ -40,7 +40,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser({ id: response.user_id });
         setToken(response.access_token);
         localStorage.setItem("site", response.access_token);
-        navigate("/HomePage");
       },
       onError: (error) => {
         console.error("Login failed:", error);

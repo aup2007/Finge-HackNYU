@@ -1,20 +1,16 @@
-"use client"
+"use client";
 
-import { useRef } from "react"
-import { Card, CardContent } from "../components/ui/card"
-import { Input } from "../components/ui/input"
-import { Button } from "../components/ui/button"
-import { Label } from "../components/ui/label"
-import { Link } from "react-router-dom"
-import { ArrowLeft, LogIn } from "lucide-react"
-import { Logo } from "../components/ui/logo"
-import { motion } from "framer-motion"
-import { useNavigate } from "react-router-dom"
-import { useAuth } from "../hooks/useAuth"
-
-
-
-
+import { useRef } from "react";
+import { Card, CardContent } from "../components/ui/card";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
+import { Label } from "../components/ui/label";
+import { Link } from "react-router-dom";
+import { ArrowLeft, LogIn } from "lucide-react";
+import { Logo } from "../components/ui/logo";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 export default function LoginPage() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -29,9 +25,9 @@ export default function LoginPage() {
     console.log("Form submitted:", { username, password });
     auth.loginAction({ username, password });
     console.log("ERROR:", auth.error);
+    console.log(auth.token);
+    navigate("/matches");
   };
-
-
 
   return (
     <motion.main
@@ -41,21 +37,25 @@ export default function LoginPage() {
       transition={{ duration: 0.5 }}
       className="min-h-screen relative flex flex-col"
     >
-      <div 
-        className="fixed inset-0" 
-        style={{ 
+      <div
+        className="fixed inset-0"
+        style={{
           backgroundImage: 'url("https://andrewma.b-cdn.net/images/bg.png")',
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat'
-        }} 
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+        }}
       />
       <div className="relative z-10 w-full max-w-md mx-auto flex-1">
         <Card className="w-full bg-white/95 backdrop-blur shadow-xl rounded-t-[50px] h-[calc(100vh-2rem)] mt-8">
           <CardContent className="p-8 space-y-8">
             {/* Back Button */}
             <Link to="/" className="block mb-4">
-              <Button variant="ghost" size="sm" className="pl-0 font-['PP_Radio_Grotesk']">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="pl-0 font-['PP_Radio_Grotesk']"
+              >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Back
               </Button>
@@ -74,7 +74,10 @@ export default function LoginPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <div className="flex justify-center">
-                  <Label htmlFor="username" className="font-['PP_Radio_Grotesk'] text-lg font-bold">
+                  <Label
+                    htmlFor="username"
+                    className="font-['PP_Radio_Grotesk'] text-lg font-bold"
+                  >
                     Username
                   </Label>
                 </div>
@@ -88,7 +91,10 @@ export default function LoginPage() {
               </div>
               <div className="space-y-2">
                 <div className="flex justify-center">
-                  <Label htmlFor="password" className="font-['PP_Radio_Grotesk'] text-lg font-bold">
+                  <Label
+                    htmlFor="password"
+                    className="font-['PP_Radio_Grotesk'] text-lg font-bold"
+                  >
                     Password
                   </Label>
                 </div>
@@ -101,8 +107,8 @@ export default function LoginPage() {
                 />
               </div>
               <div className="flex justify-center">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="text-xl px-8 py-4 rounded-xl border-0 text-white font-bold font-['PP_Radio_Grotesk'] w-auto bg-gradient-to-r from-[#AAD8E5] to-[#7ED7CB] hover:opacity-60 transition-opacity"
                 >
                   log in
@@ -113,8 +119,8 @@ export default function LoginPage() {
 
             {/* Sign Up Link */}
             <div className="text-center">
-              <Link 
-                to="/signup" 
+              <Link
+                to="/signup"
                 className="text-slate-900 hover:text-slate-600 font-['PP_Radio_Grotesk'] hover:underline underline-offset-4"
               >
                 Create an account
@@ -124,5 +130,5 @@ export default function LoginPage() {
         </Card>
       </div>
     </motion.main>
-  )
+  );
 }
