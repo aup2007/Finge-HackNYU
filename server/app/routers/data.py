@@ -58,9 +58,8 @@ async def get_stock_by_ticker(
         print(f"Searching in collection: {collection}")
         stock = await db[collection].find_one({"ticker": ticker.upper()})
         if stock:
-            stock["_id"] = str(stock["_id"])
-            print(f"Found stock in {collection} collection:", stock)
-            print(type(stock))
+            stock["id"] = str(stock["_id"])
+            del stock["_id"]
             return stock
         print(f"Stock not found in {collection} collection")
 

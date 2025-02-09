@@ -4,17 +4,34 @@ from .config import settings
 client = OpenAI(api_key=settings.PERPLEXITY_API, base_url="https://api.perplexity.ai")
 
 class LLMChatAgent:
-    def __init__(self, ticker: str, initial_prompt: str = None):
+    def __init__(self, ticker: str):
         self.ticker = ticker
         self.messages = []
-        if initial_prompt:
-            self.messages.append({"role": "system", "content": initial_prompt})
-        else:
-            # Default system message
-            self.messages.append({
-                "role": "system",
-                "content": f"You are a conversational agent for company data of {ticker}. Use the provided data to answer user queries."
-            })
+        
+        # Set system message
+        self.messages.append({
+            "role": "system",
+            "content": "You are a knowledgeable financial assistant that provides accurate and helpful information about companies and stocks."
+        })
+        
+        # Add initial user message
+        self.messages.append({
+            "role": "user", 
+            "content": initial_prompt if initial_prompt else f"Tell me about {ticker} company's business model and recent performance."
+        })
+        
+        # Get initial assistant response to maintain alternating pattern
+        try:
+            response = client.chat.completions.create(
+                model='sonar-reasoning',
+                messages=self.messages,
+                temperature=0.7,
+                stream=False
+            )
+            initial_reply = response.choices[0].message.content
+            self.messages.append({"role": "assistant", "content": initial_reply})
+        except Exception as e:
+            self.messages.append({"role": "assistant", "content": "Unable to fetch initial information."})
 
     def add_user_message(self, message: str):
         self.messages.append({"role": "user", "content": message})
@@ -24,9 +41,8 @@ class LLMChatAgent:
 
     def get_response(self) -> str:
         try:
-            # Non-streaming call for API endpoint usage
             response = client.chat.completions.create(
-                model='gpt-4o',
+                model='sonar-reasoning',
                 messages=self.messages,
                 temperature=0.7,
                 stream=False
@@ -35,10 +51,8 @@ class LLMChatAgent:
             self.add_assistant_message(reply)
             return reply
         except AuthenticationError:
-            # Handle authentication issues with the API key
             return "Error: Authentication failed. Check your API key."
         except APIError as e:
-            # Handle other API errors (e.g., insufficient balance)
             return f"API Error: {e}"
         except Exception as e:
             return f"Unexpected Error: {e}"
