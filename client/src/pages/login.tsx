@@ -11,6 +11,7 @@ import { Logo } from "../components/ui/logo";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { isAxiosError } from "axios";
 
 export default function LoginPage() {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -43,9 +44,9 @@ export default function LoginPage() {
           backgroundRepeat: "no-repeat",
         }}
       />
-      <div className="relative z-10 w-full max-w-md mx-auto flex-1">
-        <Card className="w-full bg-white/95 backdrop-blur shadow-xl rounded-t-[50px] h-[calc(100vh-2rem)] mt-8">
-          <CardContent className="p-8 space-y-8">
+      <div className="relative z-10 w-full max-w-2xl mx-auto flex-1">
+        <Card className="w-full bg-white/95 backdrop-blur shadow-xl rounded-t-[50px] h-[calc(100vh-1rem)] mt-4">
+          <CardContent className="p-12 space-y-10">
             {/* Back Button */}
             <Link to="/" className="block mb-4">
               <Button
@@ -69,30 +70,30 @@ export default function LoginPage() {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
+              <div className="space-y-2 w-96 mx-auto">
                 <div className="flex justify-center">
                   <Label
                     htmlFor="username"
                     className="font-['PP_Radio_Grotesk'] text-lg font-bold"
                   >
-                    Username
+                    What is your email?
                   </Label>
                 </div>
                 <Input
                   id="username"
                   ref={usernameRef}
                   type="text"
-                  placeholder="Enter your username"
+                  placeholder="Enter your email"
                   required
                 />
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 w-96 mx-auto">
                 <div className="flex justify-center">
                   <Label
                     htmlFor="password"
                     className="font-['PP_Radio_Grotesk'] text-lg font-bold"
                   >
-                    Password
+                    What is your password?
                   </Label>
                 </div>
                 <Input
@@ -116,7 +117,11 @@ export default function LoginPage() {
 
             {/* Error Feedback */}
             {error && (
-              <div className="text-red-500 text-center">{error.message}</div>
+              <div className="text-red-500 text-center font-['PP_Radio_Grotesk']">
+                {isAxiosError(error) && error.response?.status === 403
+                  ? "Incorrect email or password. Please try again."
+                  : error.message?.toLowerCase().includes('user')}
+              </div>
             )}
 
             {/* Sign Up Link */}

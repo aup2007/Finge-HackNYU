@@ -60,9 +60,9 @@ export default function AccountCreation({ isSignedUp, onSignup }: SignupPageProp
             backgroundRepeat: 'no-repeat'
           }} 
         />
-        <div className="relative z-10 w-full max-w-md mx-auto flex-1">
-          <Card className="w-full bg-white/95 backdrop-blur shadow-xl rounded-t-[50px] h-[calc(100vh-2rem)] mt-8">
-            <CardContent className="p-8 space-y-8">
+        <div className="relative z-10 w-full max-w-2xl mx-auto flex-1">
+          <Card className="w-full bg-white/95 backdrop-blur shadow-xl rounded-t-[50px] h-[calc(100vh-1rem)] mt-4">
+            <CardContent className="p-12 space-y-10">
               {/* Back Button */}
               <Link to="/" className="block mb-4">
                 <Button variant="ghost" size="sm" className="pl-0 font-['PP_Radio_Grotesk']">
@@ -82,21 +82,21 @@ export default function AccountCreation({ isSignedUp, onSignup }: SignupPageProp
   
               {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
+                <div className="space-y-2 w-96 mx-auto">
                   <div className="flex justify-center">
                     <Label htmlFor="username" className="font-['PP_Radio_Grotesk'] text-lg font-bold">
-                      What would you like your username to be?
+                      What is your email?
                     </Label>
                   </div>
                   <Input
                     id="username"
                     ref={usernameRef}
                     type="text"
-                    placeholder="Enter your username"
+                    placeholder="Enter your email"
                     required
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 w-96 mx-auto">
                   <div className="flex justify-center">
                     <Label htmlFor="password" className="font-['PP_Radio_Grotesk'] text-lg font-bold">
                       Please set a strong password.

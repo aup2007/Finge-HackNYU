@@ -79,11 +79,20 @@ module.exports = {
   				to: {
   					height: 0
   				}
+  			},
+  			gradient: {
+  				'0%, 100%': {
+  					'stop-color': '#38bdf8'
+  				},
+  				'50%': {
+  					'stop-color': '#3b82f6'
+  				}
   			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
-  			'accordion-up': 'accordion-up 0.2s ease-out'
+  			'accordion-up': 'accordion-up 0.2s ease-out',
+  			gradient: 'gradient 2s ease infinite'
   		}
   	}
   },
