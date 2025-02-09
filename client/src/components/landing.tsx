@@ -5,6 +5,8 @@ import { Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { Logo } from "./ui/logo"
 import { useEffect, useRef } from "react"
+import AppleLogo from "../assets/apple.png"
+import NetflixLogo from "../assets/netflix.png"
 import Typed from 'typed.js'
 
 type TypedOptions = {
@@ -85,9 +87,9 @@ export default function LandingPage() {
               </div>
               <div className="bg-black rounded-full p-2">
                 <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CleanShot%202025-02-08%20at%2014.05.27@2x-rTlFRDCejANpKsAPBYCIopLdE1k03N.png"
+                  src={AppleLogo}
                   alt="Apple logo"
-                  className="w-6 h-6 invert"
+                  className="w-8 h-8"
                 />
               </div>
             </div>
@@ -108,9 +110,9 @@ export default function LandingPage() {
               </div>
               <div className="bg-black rounded-full p-2">
                 <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/CleanShot%202025-02-08%20at%2014.05.27@2x-rTlFRDCejANpKsAPBYCIopLdE1k03N.png"
+                  src={NetflixLogo}
                   alt="Netflix logo"
-                  className="w-6 h-6"
+                  className="w-8 h-8"
                 />
               </div>
             </div>
@@ -132,7 +134,7 @@ export default function LandingPage() {
             Hinge for stocks.
           </motion.h1>
           <div className="space-y-2">
-            <Logo size="lg" />
+            <Logo size="lg" slashColor="text-sky-400 font-bold" />
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -155,7 +157,7 @@ export default function LandingPage() {
           </div>
           <Link to="/account-creation">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>
-              <Button variant="outline" size="lg" className="text-xl px-8 py-6 mt-8 rounded-full border-2 font-['PP_Radio_Grotesk']">
+              <Button variant="outline" size="lg" className="text-xl px-8 py-6 mt-8 rounded-xl border-2 bg-white border-black font-['PP_Radio_Grotesk']">
                 try it out now
                 <ArrowRight className="ml-2 h-6 w-4" />
               </Button>

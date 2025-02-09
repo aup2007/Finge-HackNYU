@@ -9,18 +9,40 @@ import { Link } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import { Logo } from "./ui/logo"
 import { motion } from "framer-motion"
+import { SignupPageProps } from "../Interfaces.ts";
+import { useRef } from "react";
+import useCreateUser from "../hooks/useCreateUser";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
-export default function AccountCreation() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  })
+export default function AccountCreation({ isSignedUp, onSignup }: SignupPageProps) {
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const { mutate: createUser, error } = useCreateUser();
+  const navigate = useNavigate();
+  const auth = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted:", formData)
-  }
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const username = usernameRef.current?.value || "";
+    const password = passwordRef.current?.value || "";
+    console.log("Form submitted:", { username, password });
+    
+    createUser(
+      { username, password },
+      {
+        onSuccess: (data) => {
+          console.log("Signup successful:", data);
+          onSignup();
+          auth.logOut();
+          navigate("/LoginPage");
+        },
+        onError: (error) => {
+          console.error("Signup failed:", error);
+        },
+      }
+    );
+  };
 
   return (
     <motion.main
@@ -59,57 +81,48 @@ export default function AccountCreation() {
             </div>
 
             {/* Form */}
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-6"
-            >
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-base font-['PP_Radio_Grotesk']">What is your email?</Label>
+                <Label htmlFor="username">Username</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  placeholder="john.appleseed@nyu.edu"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="rounded-full border-2 border-slate-200 h-12 px-4 font-['PP_Radio_Grotesk']"
+                  id="username"
+                  ref={usernameRef}
+                  type="text"
+                  placeholder="Enter your username"
                   required
                 />
               </div>
-
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-base font-['PP_Radio_Grotesk']">What is your password?</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
+                  ref={passwordRef}
                   type="password"
-                  placeholder="MyPassword123!"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="rounded-full border-2 border-slate-200 h-12 px-4 font-['PP_Radio_Grotesk']"
+                  placeholder="Enter your password"
                   required
                 />
               </div>
-
-              <Button 
-                type="submit" 
-                className="w-full rounded-full bg-sky-200 hover:bg-sky-300 text-slate-800 h-12 font-['PP_Radio_Grotesk']"
-              >
-                Next
+              {error && (
+                <p className="text-red-500 text-sm">
+                  {error instanceof Error ? error.message : "An error occurred during signup"}
+                </p>
+              )}
+              <Button type="submit" className="w-full">
+                Create Account
               </Button>
+              <p className="text-center text-sm text-gray-600">
+                Already have an account?{" "}
+                <Link to="/LoginPage" className="text-blue-600 hover:underline">
+                  Sign in
+                </Link>
+              </p>
             </form>
-
-            {/* Login Link */}
-            <div className="text-center">
-              <Link 
-                to="/login" 
-                className="text-slate-900 hover:text-slate-600 font-['PP_Radio_Grotesk'] hover:underline underline-offset-4"
-              >
-                Log in
-              </Link>
-            </div>
           </CardContent>
         </Card>
       </div>
     </motion.main>
-  )
+  );
 }
+
+
 
