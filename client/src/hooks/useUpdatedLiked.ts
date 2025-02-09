@@ -12,9 +12,9 @@ const useUpdateLiked = () => {
   const { token } = useAuth();
   const queryClient = useQueryClient();
 
-  return useMutation<UpdateLikedResponse, Error, { ticker: string; logoUrl: string }>({
-    mutationFn: async ({ ticker, logoUrl }) => {
-      return apiClient.updateLikedStocks(ticker, logoUrl, token || "");
+  return useMutation<UpdateLikedResponse, Error, { ticker: string; imageUrl: string }>({
+    mutationFn: async ({ ticker, imageUrl }) => {
+      return apiClient.updateLikedStocks(ticker, imageUrl, token || "");
     },
     onSuccess: async () => {
       // Immediately fetch the updated list

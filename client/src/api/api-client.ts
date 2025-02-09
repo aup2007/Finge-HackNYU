@@ -98,12 +98,12 @@ class APIClient<T> {
     return response.data;
   };
 
-  updateLikedStocks = async (ticker: string, logoUrl: string, token: string) => {
+  updateLikedStocks = async (ticker: string, imageUrl: string, token: string) => {
     const response = await axiosInstance.post<T>(
       this.endpoint,
       {
         ticker: ticker,
-        logoUrl: logoUrl,
+        imageUrl: imageUrl
       },
       {
         headers: {

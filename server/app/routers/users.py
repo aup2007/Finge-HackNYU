@@ -53,7 +53,7 @@ async def get_liked_stocks(
 ):
     return current_user.get("likedStocks", [])
 
-@router.post("/current_user/liked-stocks", response_model=List[schemas.LikedStock])
+@router.post("/current_user/liked-stocks")
 async def add_liked_stock(
     stock: schemas.StockLikeRequest,
     current_user: dict = Depends(oauth2.get_current_user),

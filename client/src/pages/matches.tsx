@@ -93,7 +93,7 @@ export default function StockTracker() {
       try {
         await updateLiked.mutateAsync({
           ticker: currentStock.symbol || "",
-          logoUrl: currentStock.logo || ""
+          imageUrl: currentStock.logo || ""
         })
       } catch (error) {
         console.error("Failed to like stock:", error);
