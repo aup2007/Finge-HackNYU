@@ -19,7 +19,7 @@ class PyObjectId(ObjectId):
 
 
 class UserCreate(BaseModel):
-    email: EmailStr
+    username: EmailStr
     password: str
 
 class LikedStock(BaseModel):
@@ -38,10 +38,10 @@ class StockLikeRequest(BaseModel):
 
 class UserResponse(BaseModel):
     id: str
-    email: EmailStr
+    username: EmailStr
     created_at: datetime
     categories: List[str]
-    likedStocks: List[LikedStock]  # Changed from List[str] to List[LikedStock]
+    likedStocks: List[LikedStock]   # Changed from List[str] to List[LikedStock]
 
     class Config:
         json_encoders = {ObjectId: str}
@@ -60,7 +60,7 @@ class LoginResponse(BaseModel):
 
 
 class UserUpdate(BaseModel):
-    email: Optional[EmailStr] = None
+    username: Optional[EmailStr] = None
 
     class Config:
         arbitrary_types_allowed = True

@@ -14,7 +14,7 @@ router = APIRouter(
 @router.post("/signup", status_code=status.HTTP_201_CREATED, response_model=schemas.UserResponse)
 async def signup(user: OAuth2PasswordRequestForm = Depends(), db: AsyncIOMotorDatabase = Depends(get_mongo_db)):
     # Check if user already exists
-    existing_user = await db.Users.find_one({"email": user.username})
+    existing_user = await db.Users.find_one({"username": user.username})
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -26,7 +26,7 @@ async def signup(user: OAuth2PasswordRequestForm = Depends(), db: AsyncIOMotorDa
 
     # Create user document manually
     user_dict = {
-        "email": user.username,
+        "username": user.username,
         "password": hashed_password,
         "created_at": str(datetime.now()),
         "categories": [],
@@ -45,7 +45,7 @@ async def signup(user: OAuth2PasswordRequestForm = Depends(), db: AsyncIOMotorDa
 
 @router.post("/login", response_model=schemas.LoginResponse)
 async def login(user_credentials: OAuth2PasswordRequestForm = Depends(), db: AsyncIOMotorDatabase = Depends(get_mongo_db)):
-    user = await db.Users.find_one({"email": user_credentials.username})
+    user = await db.Users.find_one({"username": user_credentials.username})
     if not user:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Invalid credentials")

@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, LogIn } from "lucide-react";
 import { Logo } from "../components/ui/logo";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { isAxiosError } from "axios";
 
@@ -17,7 +16,6 @@ export default function LoginPage() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const { loginAction, error } = useAuth();
-  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -120,7 +118,7 @@ export default function LoginPage() {
               <div className="text-red-500 text-center font-['PP_Radio_Grotesk']">
                 {isAxiosError(error) && error.response?.status === 403
                   ? "Incorrect email or password. Please try again."
-                  : error.message?.toLowerCase().includes('user')}
+                  : error.message?.toLowerCase().includes("user")}
               </div>
             )}
 

@@ -78,12 +78,6 @@ async def add_liked_stock(
             detail="Failed to add stock to likes"
         )
     
-    updated_user = await db.Users.find_one({"_id": ObjectId(user_id)})
-    if not updated_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not fetch updated user"
-        )
     return {"message" : "user updated"}
 
 @router.delete("/current_user/liked-stocks/{ticker}", response_model=schemas.UserResponse)
@@ -112,7 +106,7 @@ async def remove_liked_stock(
 
 @router.put("/current_user/liked-stocks", response_model=schemas.UserResponse)
 async def update_liked_stocks(
-    stocks: List[str] = Body(..., example=["AAPL", "GOOGL"]),
+    stocks: schemas.StockLikeRequest,
     current_user: dict = Depends(oauth2.get_current_user),
     db: AsyncIOMotorDatabase = Depends(get_mongo_db)
 ):

@@ -18,7 +18,7 @@ class PyObjectId(ObjectId):
 
 class UserModel(BaseModel):
     id: Optional[PyObjectId] = None
-    email: EmailStr
+    username: EmailStr
     password: str
     created_at: datetime = datetime.now()
 
