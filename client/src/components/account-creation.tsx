@@ -6,7 +6,7 @@ import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { Label } from "./ui/label"
 import { Link } from "react-router-dom"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, UserPlus } from "lucide-react"
 import { Logo } from "./ui/logo"
 import { motion } from "framer-motion"
 import { SignupPageProps } from "../Interfaces.ts";
@@ -107,10 +107,14 @@ export default function AccountCreation({ isSignedUp, onSignup }: SignupPageProp
                   {error instanceof Error ? error.message : "An error occurred during signup"}
                 </p>
               )}
-              <Button type="submit" className="w-full">
-                Create Account
+              <Button 
+                variant="outline" 
+                className="text-xl rounded-xl font-bold border-0 bg-gradient-to-r from-[#B4E1E7] to-[#AAE4D7] text-white font-['PP_Radio_Grotesk'] hover:opacity-90 transition-opacity py-4 flex items-center justify-center mx-auto"
+              >
+                create my account!
+                <UserPlus className="ml-2 h-6 w-6" />
               </Button>
-              <p className="text-center text-sm text-gray-600">
+              <p className="text-center text-sm  text-gray-600">
                 Already have an account?{" "}
                 <Link to="/LoginPage" className="text-blue-600 hover:underline">
                   Sign in
