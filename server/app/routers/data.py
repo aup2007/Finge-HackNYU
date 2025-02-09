@@ -4,6 +4,7 @@ from motor.motor_asyncio import AsyncIOMotorDatabase
 from ..database import get_mongo_db
 from .. import schemas, oauth2
 from datetime import datetime
+import random
 
 # API DESIGN
 # So the user categories need to be initiated and updated
@@ -107,4 +108,5 @@ async def get_companies_by_preferences(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No stocks found matching your preferences"
         )
+    random.shuffle(stocks)
     return {"stocks": stocks}

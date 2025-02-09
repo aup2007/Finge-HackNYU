@@ -1,7 +1,7 @@
 from openai import OpenAI, APIError, AuthenticationError
 from .config import settings
 
-client = OpenAI(api_key=settings.OPENAI_API)
+client = OpenAI(api_key=settings.PERPLEXITY_API)
 
 class LLMChatAgent:
     def __init__(self, ticker: str, initial_prompt: str = None):

@@ -27,13 +27,14 @@ class LikedStock(BaseModel):
     imageUrl: str
     company: str
     close : float
+    open : float
 
 class StockLikeRequest(BaseModel):
     ticker: str
     imageUrl: str
     company: str
     close : float
-
+    open : float
 
 class UserResponse(BaseModel):
     id: str

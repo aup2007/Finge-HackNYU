@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     JWT_EXPIRY_MINUTES: int
     DEEPSEEK_API: str
     OPENAI_API : str
+    PERPLEXITY_API : str
     # auto parse from .env
 
     @property
