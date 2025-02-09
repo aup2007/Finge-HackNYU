@@ -85,6 +85,34 @@ class APIClient<T> {
     );
     return response.data;
   };
+
+  getLikedStocks = async (token: string) => {
+    const response = await axiosInstance.get<T>(
+      this.endpoint,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  };
+
+  updateLikedStocks = async (ticker: string, logoUrl: string, token: string) => {
+    const response = await axiosInstance.post<T>(
+      this.endpoint,
+      {
+        ticker: ticker,
+        logoUrl: logoUrl,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  };
 }
 
 export default APIClient;

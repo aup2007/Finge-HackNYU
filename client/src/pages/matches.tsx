@@ -4,7 +4,9 @@ import { useState, useEffect } from "react"
 import StockList from "@/components/stock-list"
 import StockDetail from "@/components/stock-detail"
 import type { StockWithNews, StockStatus } from "@/components/types/index.ts"
-import { useStockMatches, Company } from "../hooks/getStocks"
+import { useStockMatches, Company } from "../hooks/useStockMatches"
+import { useLikedStocks } from "../hooks/useLikedStocks"
+import useUpdateLiked from "../hooks/useUpdatedLiked"
 import { Loader2 } from "lucide-react"
 
 // Transform API company data to match StockWithNews type
@@ -63,10 +65,11 @@ const transformCompanyToStock = (company: Company): StockWithNews => {
 
 export default function StockTracker() {
   const { data: companies, isLoading, error } = useStockMatches()
+  const { data: likedStocks } = useLikedStocks()
+  const updateLiked = useUpdateLiked()
   const [stockQueue, setStockQueue] = useState<StockWithNews[]>([])
   const [currentStock, setCurrentStock] = useState<StockWithNews | null>(null)
   const [stockStatus, setStockStatus] = useState<StockStatus>("neutral")
-  const [likedStocks, setLikedStocks] = useState<StockWithNews[]>([])
 
   // Update stock queue when companies data is loaded
   useEffect(() => {
@@ -83,11 +86,19 @@ export default function StockTracker() {
     }
   }, [stockQueue, currentStock])
 
-  const handleAction = (action: "like" | "pass") => {
+  const handleAction = async (action: "like" | "pass") => {
     setStockStatus(action === "like" ? "liked" : "passed")
 
     if (action === "like" && currentStock) {
-      setLikedStocks((prev) => [...prev, currentStock])
+      try {
+        await updateLiked.mutateAsync({
+          ticker: currentStock.symbol || "",
+          logoUrl: currentStock.logo || ""
+        })
+      } catch (error) {
+        console.error("Failed to like stock:", error);
+        // Optionally show an error message to the user
+      }
     }
 
     setTimeout(() => {
@@ -125,7 +136,7 @@ export default function StockTracker() {
       />
       <div className="relative z-10 flex w-full max-w-7xl mx-auto gap-8 h-screen pt-8 px-8">
         <div className="w-[320px] bg-white rounded-t-[50px] shadow-lg overflow-hidden flex flex-col">
-          <StockList stocks={likedStocks} onSelectStock={() => {}} />
+          <StockList stocks={likedStocks || []} onSelectStock={() => {}} />
         </div>
         <div className="flex-1 bg-white rounded-t-[50px] shadow-lg overflow-hidden flex flex-col">
           {currentStock ? (
