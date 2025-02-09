@@ -117,12 +117,32 @@ export default function StockTracker() {
   };
 
   const handleSelectLikedStock = (stock: Stock) => {
-    // Find the full stock details from companies data
+    // First try to find the stock in the companies data for full details
     const fullStockDetails = companies?.find(company => company.ticker === stock.symbol);
+    
     if (fullStockDetails) {
       setSelectedLikedStock(transformCompanyToStock(fullStockDetails));
-      setCurrentStock(null);
+    } else {
+      // If not found in companies, create a StockWithNews from the liked stock data
+      setSelectedLikedStock({
+        ...stock,
+        news: [],
+        description: "",
+        open: 0,
+        close: 0,
+        marketData: {
+          open: 0,
+          high: 0,
+          low: 0,
+          close: stock.price || 0,
+          volume: 0,
+          afterHours: 0,
+          preMarket: 0,
+          date: new Date().toISOString(),
+        }
+      });
     }
+    setCurrentStock(null);
   };
 
   const handleBackToDiscovery = () => {
