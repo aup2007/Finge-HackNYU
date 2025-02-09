@@ -224,14 +224,14 @@ export default function LandingPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="text-center space-y-4">
-              <h3 className="text-2xl font-['PP_Pangaia']">Simple</h3>
+              <h3 className="text-2xl font-['PP_Pangaia']">Simple.</h3>
               <p className="text-slate-600 font-['PP_Radio_Grotesk']">
                 Find your next investment with an intuitive, swipe-based
                 interface. No complex charts or confusing metrics.
               </p>
             </div>
             <div className="text-center space-y-4">
-              <h3 className="text-2xl font-['PP_Pangaia']">Smart</h3>
+              <h3 className="text-2xl font-['PP_Pangaia']">Smart.</h3>
               <p className="text-slate-600 font-['PP_Radio_Grotesk']">
                 AI-powered insights help you understand each company's
                 potential. Get personalized stock recommendations.
