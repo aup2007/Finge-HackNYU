@@ -1,35 +1,26 @@
 import { Route, Routes } from "react-router-dom";
-import LandingPage from "./pages/landing.tsx";
-import AccountCreation from "./pages/account-creation.tsx";
+import LandingPage from "./pages/LandingPage.tsx";
+import AccountCreation from "./pages/AccountCreation.tsx";
 import AuthProvider from "./hooks/useAuth";
-import { useState } from "react";
-import LoginPage from "./pages/login.tsx";
-import StockTracker from "./pages/matches.tsx";
-import SelectionPage from "./pages/selection.tsx";
-import PrivateRoute from "./pages/PrivateRoute";
+import LoginPage from "./pages/LoginPage.tsx";
+import StockTracker from "./pages/StockTracker.tsx";
+import SelectionPage from "./pages/SelectionPage.tsx";
+import PrivateRoute from "./pages/PrivateRoute.tsx";
 
 export default function App() {
-  const [isSignedUp, setIsSignedUp] = useState(false);
-
-  const handleSignup = () => {
-    setIsSignedUp(true);
-  };
-
   return (
     <AuthProvider>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/signup"
-          element={
-            <AccountCreation isSignedUp={isSignedUp} onSignup={handleSignup} />
-          }
-        />
-        <Route path="/selection" element={<SelectionPage />} />
+        <Route path="/signup" element={<AccountCreation />} />
+
+        {/* Protected Routes */}
         <Route element={<PrivateRoute />}>
+          <Route path="/selection" element={<SelectionPage />} />
           <Route path="/matches" element={<StockTracker />} />
-          </Route>
+        </Route>
       </Routes>
     </AuthProvider>
   );

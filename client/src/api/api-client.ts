@@ -1,3 +1,4 @@
+import { LikedStock } from "@/interfaces";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -35,6 +36,10 @@ class APIClient<T> {
   };
 
   updateCategories = async (categories: string[], token: string) => {
+    if (categories.length === 0) {
+      categories = ["Finance", "Tech", "Consumer", "Energy"];
+    }
+
     const response = await axiosInstance.put<T>(
       this.endpoint,
       { categories: categories },
@@ -48,21 +53,9 @@ class APIClient<T> {
     return response.data;
   };
 
-  getCurrentUser = async (token: string) => {
-    const response = await axiosInstance.get<T>(
-      "/users/current_user",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return response.data;
-  };
-
   getCompanyMatches = async (token: string) => {
     const response = await axiosInstance.post<T>(
-      "/data/companies/by-preferences",
+      this.endpoint,
       {},
       {
         headers: {
@@ -75,43 +68,41 @@ class APIClient<T> {
   };
 
   getNewsArticles = async (ticker: string, token: string) => {
-    const response = await axiosInstance.get<T>(
-      `/data/news/${ticker}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axiosInstance.get<T>(`${this.endpoint}/${ticker}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   };
 
   getLikedStocks = async (token: string) => {
-    const response = await axiosInstance.get<T>(
-      this.endpoint,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axiosInstance.get<T>(this.endpoint, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   };
 
-  updateLikedStocks = async (ticker: string, imageUrl: string, token: string) => {
-    const response = await axiosInstance.post<T>(
-      this.endpoint,
-      {
-        ticker: ticker,
-        imageUrl: imageUrl
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+  updateLikedStocks = (stock: LikedStock, token: string) => {
+    return axiosInstance
+      .post<T>(
+        this.endpoint,
+        {
+          ticker: stock.ticker,
+          imageUrl: stock.imageUrl,
+          company: stock.company,
+          close: stock.close,
+          open: stock.open,
         },
-      }
-    );
-    return response.data;
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((res) => res.data);
   };
 }
 

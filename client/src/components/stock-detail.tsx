@@ -1,5 +1,9 @@
 //Reformat the stock to match the server-side values
-import type { StockWithNews, StockStatus } from "@/components/types/index.ts";
+import type {
+  StockWithNews,
+  StockStatus,
+  StockDetailProps,
+} from "@/interfaces";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,16 +22,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import QuirksSection from "./quirks-section";
 import { useNewsArticles } from "@/hooks/useNewsArticles";
 
-interface StockDetailProps {
-  stock: StockWithNews;
-  onLike: () => void;
-  onPass: () => void;
-  status: StockStatus;
-}
-
 const getQuirksForStock = (stock: StockWithNews) => {
   if (!stock.opinions) return [];
-  
+
   return [
     {
       title: stock.opinions[0].heading,
@@ -53,7 +50,9 @@ export default function StockDetail({
   onPass,
   status,
 }: StockDetailProps) {
-  const { data: newsArticles, isLoading: isLoadingNews } = useNewsArticles(stock.symbol || "");
+  const { data: newsArticles, isLoading: isLoadingNews } = useNewsArticles(
+    stock.symbol || ""
+  );
 
   const variants = {
     liked: { x: "100%", opacity: 0, transition: { duration: 0.5 } },
@@ -95,12 +94,11 @@ export default function StockDetail({
                 <span className="text-3xl font-['PP_Radio_Grotesk']">
                   ${stock.price} {stock.currency}
                 </span>
-                {stock.trend === "up" && (
-                  <span className="text-2xl text-green-500">↗</span>
-                )}
-                {stock.trend === "down" && (
-                  <span className="text-2xl text-red-500">↘</span>
-                )}
+                {stock.open < stock.close ? (
+                  <TrendingUp className="h-6 w-6 text-green-500" />
+                ) : stock.open > stock.close ? (
+                  <TrendingDown className="h-6 w-6 text-red-500" />
+                ) : null}
               </div>
               <div className="mt-2 text-lg text-gray-500 font-['PP_Radio_Grotesk']">
                 {stock.symbol} • {stock.category}
@@ -180,7 +178,9 @@ export default function StockDetail({
             </section>
 
             <section>
-              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">More About Me</h2>
+              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">
+                More About Me
+              </h2>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-['PP_Radio_Grotesk'] font-medium">CEO</h3>
@@ -333,7 +333,9 @@ export default function StockDetail({
                     </Card>
                   ))
                 ) : (
-                  <p className="text-gray-500 text-center py-8">No news articles available.</p>
+                  <p className="text-gray-500 text-center py-8">
+                    No news articles available.
+                  </p>
                 )}
               </div>
             </section>

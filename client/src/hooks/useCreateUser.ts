@@ -1,12 +1,7 @@
 //Let's generate a custom hook that will handle the login logic. This hook will be used in the Login component.
 import { useMutation } from "@tanstack/react-query";
 import APIClient from "../api/api-client.ts";
-
-interface createUserResponse {
-  id: string;
-  email: string;
-  created_at: string;
-}
+import { createUserResponse } from "../interfaces";
 
 const apiClient = new APIClient<createUserResponse>("/signup");
 

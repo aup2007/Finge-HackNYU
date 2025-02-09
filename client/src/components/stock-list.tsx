@@ -1,4 +1,4 @@
-import type { Stock } from "./types";
+import type { Stock } from "@/interfaces";
 import { Filter } from "lucide-react";
 
 interface StockListProps {

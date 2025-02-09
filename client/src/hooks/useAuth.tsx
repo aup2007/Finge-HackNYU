@@ -1,27 +1,13 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useLogin from "./useLogin";
 import { AxiosError } from "axios";
-interface User {
-  id: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  token: string;
-  loginAction: (data: LoginData) => Promise<void>;
-  logOut: () => void;
-  error: Error | AxiosError | null;
-}
-
-interface LoginData {
-  username: string;
-  password: string;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
+import {
+  AuthContextType,
+  AuthProviderProps,
+  User,
+  LoginData,
+} from "../interfaces";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 

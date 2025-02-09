@@ -1,31 +1,33 @@
-import { useState } from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Quirk {
-  title: string
-  description: string
-  backgroundColor: string
+  title: string;
+  description: string;
+  backgroundColor: string;
 }
 
 interface QuirksSectionProps {
-  quirks: Quirk[]
+  quirks: Quirk[];
 }
 
 export default function QuirksSection({ quirks }: QuirksSectionProps) {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextQuirk = () => {
-    setCurrentIndex((prev) => (prev + 1) % quirks.length)
-  }
+    setCurrentIndex((prev) => (prev + 1) % quirks.length);
+  };
 
   const previousQuirk = () => {
-    setCurrentIndex((prev) => (prev - 1 + quirks.length) % quirks.length)
-  }
+    setCurrentIndex((prev) => (prev - 1 + quirks.length) % quirks.length);
+  };
 
   return (
     <div className="space-y-3">
-      <p className="text-gray-600 italic text-lg font-['PP_Radio_Grotesk']">"Looking for investors who understand that..."</p>
+      <p className="text-gray-600 italic text-lg font-['PP_Radio_Grotesk']">
+        "Looking for investors who understand that..."
+      </p>
       <div className="relative">
         <div className="overflow-hidden rounded-2xl">
           <div
@@ -41,8 +43,12 @@ export default function QuirksSection({ quirks }: QuirksSectionProps) {
                   className="w-full flex-shrink-0 px-14 py-5"
                   style={{ backgroundColor: quirk.backgroundColor }}
                 >
-                  <h3 className="text-xl font-['PP_Pangaia'] mb-1">{quirk.title}</h3>
-                  <p className="text-lg font-['PP_Radio_Grotesk']">{quirk.description}</p>
+                  <h3 className="text-xl font-['PP_Pangaia'] mb-1">
+                    {quirk.title}
+                  </h3>
+                  <p className="text-lg font-['PP_Radio_Grotesk']">
+                    {quirk.description}
+                  </p>
                 </div>
               ))}
             </div>
@@ -66,6 +72,5 @@ export default function QuirksSection({ quirks }: QuirksSectionProps) {
         </Button>
       </div>
     </div>
-  )
+  );
 }
-

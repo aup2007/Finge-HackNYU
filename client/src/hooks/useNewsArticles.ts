@@ -1,11 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../api/api-client";
 import { useAuth } from "./useAuth";
-import { NewsArticle } from "@/components/types";
-
-interface NewsResponse {
-  articles: NewsArticle[];
-}
+import { NewsResponse } from "@/interfaces";
 
 const apiClient = new APIClient<NewsResponse>("/data/news");
 
@@ -19,6 +15,6 @@ export const useNewsArticles = (ticker: string) => {
       return response.articles;
     },
     enabled: !!token && !!ticker,
-    staleTime: 1000 * 60 * 5 * 10, // Cache for 50 minutes
+    staleTime: 1000 * 60 * 5, // Cache for 50 minutes
   });
-}; 
+};
