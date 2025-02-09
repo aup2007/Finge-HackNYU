@@ -16,10 +16,13 @@ export const useLikedStocks = () => {
     select: (data) =>
       data.map((stock) => ({
         id: stock.ticker,
+        name: stock.company,
+        symbol: stock.ticker,
+        price: stock.close,
+        currency: "USD",
         logo: stock.imageUrl,
-        open: stock.open,
-        close: stock.close,
-        company: stock.company,
+        category: "",
+        trend: stock.close > stock.open ? "up" : stock.close < stock.open ? "down" : "neutral"
       })),
     enabled: !!token,
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
