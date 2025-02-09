@@ -74,6 +74,9 @@ async def get_current_user(
             raise credentials_exception
 
         print("Step 4b: User authentication successful")
+        print(user)
+        user["id"] = str(user["_id"])
+        del user["_id"]
         return user
 
     except Exception as e:

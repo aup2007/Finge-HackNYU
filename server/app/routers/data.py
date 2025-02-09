@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from ..database import get_mongo_db
@@ -26,7 +27,7 @@ async def root():
     return {"HELLO": "WORLD"}
 
 
-@router.get("/fetch-all")
+@router.get("/companies/fetch-all")
 async def get_all_company_data(
     db: AsyncIOMotorDatabase = Depends(get_mongo_db),
     current_user: dict = Depends(oauth2.get_current_user)
@@ -43,7 +44,7 @@ async def get_all_company_data(
     return {"stocks": all_stocks}
 
 
-@router.get("/{ticker}")
+@router.get("/companies/{ticker}")
 async def get_stock_by_ticker(
     ticker: str,
     db: AsyncIOMotorDatabase = Depends(get_mongo_db),
@@ -67,3 +68,43 @@ async def get_stock_by_ticker(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Stock with ticker {ticker} not found"
     )
+
+@router.get("/news/{ticker}")
+async def get_news_articles_by_company(ticker: str,
+    db: AsyncIOMotorDatabase = Depends(get_mongo_db),
+    current_user: dict = Depends(oauth2.get_current_user)):
+    collection = "News"
+    cursor = db[collection].find({"ticker": ticker.upper()})
+    articles = await cursor.to_list(length=None)
+    for article in articles:
+        article["_id"] = str(article["_id"])
+    return {"articles" : articles}
+#Make sure that regardless of capitalization at any part, we get the right collections
+valid_collections = {
+    "tech": "Tech",
+    "finance": "Finance",
+    "consumer": "Consumer",
+    "energy": "Energy"
+}
+
+@router.post("/companies/by-preferences")
+async def get_companies_by_preferences(
+    current_user: dict = Depends(oauth2.get_current_user),
+    db: AsyncIOMotorDatabase = Depends(get_mongo_db)
+):
+    # Use the saved categories in the user document
+    user_categories = current_user.get("categories", [])
+    stocks = []
+    for cat in user_categories:
+        collection_name = valid_collections.get(cat.lower())
+        if collection_name:
+            cursor = db[collection_name].find({})
+            async for stock in cursor:
+                stock["_id"] = str(stock["_id"])
+                stocks.append(stock)
+    if not stocks:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No stocks found matching your preferences"
+        )
+    return {"stocks": stocks}

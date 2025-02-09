@@ -24,7 +24,7 @@ class UserCreate(BaseModel):
 
 
 class UserResponse(BaseModel):
-    id: PyObjectId = None
+    id: str
     email: EmailStr
     created_at: datetime
     categories: List[str]
@@ -74,3 +74,6 @@ class StockData(BaseModel):
 class StockResponse(BaseModel):
     data: List[StockData]
     sector: str
+
+class PreferencesUpdate(BaseModel):
+    categories: List[str]

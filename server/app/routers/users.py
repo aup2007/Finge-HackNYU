@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from typing import List
+from fastapi import APIRouter, Body, Depends, HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from ..database import get_mongo_db
 from .. import schemas, oauth2
@@ -11,12 +12,38 @@ router = APIRouter(
 )
 
 
-@router.get("/me", response_model=schemas.UserResponse)
+@router.get("/current_user", response_model=schemas.UserResponse)
 async def get_current_user(
     current_user: dict = Depends(oauth2.get_current_user)
 ):
     return current_user
 
+@router.put("/current_user/update_categories", response_model=schemas.UserResponse)
+async def update_user_preferences(
+    prefs: schemas.PreferencesUpdate,
+    current_user: dict = Depends(oauth2.get_current_user),
+    db: AsyncIOMotorDatabase = Depends(get_mongo_db)
+):
+    if prefs.categories == current_user.get("categories"):
+        return current_user
+    user_id = current_user.get("id")
+    print("USER ID:", user_id)
+    result = await db.Users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {"categories": prefs.categories}}
+    )
+    print("RESULT:", result)
+    print("MODIFIED:", result.modified_count)
+    if result.modified_count == 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Failed to update categories"
+        )
+    # Fetch the updated user and convert _id to str:
+    updated_user = await db.Users.find_one({"_id": ObjectId(user_id)})
+    updated_user["id"] = str(updated_user["_id"])
+    del updated_user["_id"]
+    return updated_user
 
 @router.get("/{id}", response_model=schemas.UserResponse)
 async def get_user(

@@ -1,7 +1,7 @@
 from openai import OpenAI, APIError, AuthenticationError
 from .config import settings
 
-client = OpenAI(api_key=settings.DEEPSEEK_API, base_url="https://api.deepseek.com/v1")
+client = OpenAI(api_key=settings.OPENAI_API)
 
 class LLMChatAgent:
     def __init__(self, ticker: str, initial_prompt: str = None):
@@ -26,7 +26,7 @@ class LLMChatAgent:
         try:
             # Non-streaming call for API endpoint usage
             response = client.chat.completions.create(
-                model='deepseek-reasoner',
+                model='gpt-4o',
                 messages=self.messages,
                 temperature=0.7,
                 stream=False

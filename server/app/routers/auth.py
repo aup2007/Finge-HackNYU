@@ -37,8 +37,8 @@ async def signup(user: OAuth2PasswordRequestForm = Depends(), db: AsyncIOMotorDa
 
     # Get created user
     created_user = await db.Users.find_one({"_id": result.inserted_id})
-    # Convert ObjectId to str so jsonable_encoder can serialize it properly.
-    created_user["_id"] = str(created_user["_id"])
+    created_user["id"] = str(created_user["_id"])
+    del created_user["_id"]
     return created_user
 
 
