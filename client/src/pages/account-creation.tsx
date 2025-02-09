@@ -33,7 +33,7 @@ export default function AccountCreation({ isSignedUp, onSignup }: SignupPageProp
           console.log("Signup successful:", data);
           onSignup();
           auth.logOut();
-          navigate("/LoginPage");
+          navigate("/login");
         },
         onError: (error) => {
           console.error("Signup failed:", error);

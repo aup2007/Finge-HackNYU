@@ -144,18 +144,27 @@ export default function StockTracker() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
-      <div className="flex w-full max-w-7xl mx-auto gap-8 h-[calc(100vh-4rem)]">
-        <div className="w-[320px] bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col">
+    <div className="min-h-screen relative flex flex-col">
+      <div 
+        className="fixed inset-0" 
+        style={{ 
+          backgroundImage: 'url("https://andrewma.b-cdn.net/images/bg.png")',
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat'
+        }} 
+      />
+      <div className="relative z-10 flex w-full max-w-7xl mx-auto gap-8 h-screen pt-8 px-8">
+        <div className="w-[320px] bg-white rounded-t-[50px] shadow-lg overflow-hidden flex flex-col">
           <StockList stocks={likedStocks} onSelectStock={() => {}} />
         </div>
-        <div className="flex-1 bg-white rounded-3xl shadow-lg overflow-hidden flex flex-col">
+        <div className="flex-1 bg-white rounded-t-[50px] shadow-lg overflow-hidden flex flex-col">
           {currentStock && (
             <StockDetail
               stock={currentStock}
-              // onLike={() => handleAction("like")}
-              // onPass={() => handleAction("pass")}
-              // status={stockStatus}
+              onLike={() => handleAction("like")}
+              onPass={() => handleAction("pass")}
+              status={stockStatus}
             />
           )}
         </div>

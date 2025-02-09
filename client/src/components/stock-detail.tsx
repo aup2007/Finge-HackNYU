@@ -68,26 +68,26 @@ export default function StockDetail({ stock, onLike, onPass, status }: StockDeta
         <div className="border-b p-8 z-20">
           <div className="mb-6 flex items-start justify-between">
             <div className="flex-1">
-              <h1 className="font-serif text-5xl mb-2">{stock.name}</h1>
+              <h1 className="font-['PP_Pangaia'] text-5xl mb-2">{stock.name}</h1>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-medium">
+                <span className="text-3xl font-['PP_Radio_Grotesk']">
                   ${stock.price} {stock.currency}
                 </span>
                 {stock.trend === "up" && <span className="text-2xl text-green-500">↗</span>}
                 {stock.trend === "down" && <span className="text-2xl text-red-500">↘</span>}
               </div>
-              <div className="mt-2 text-lg text-gray-500">
+              <div className="mt-2 text-lg text-gray-500 font-['PP_Radio_Grotesk']">
                 {stock.symbol} • {stock.category}
               </div>
             </div>
             <img src={stock.logo || "/placeholder.svg"} alt={stock.name} className="h-24 w-24 rounded-full bg-black" />
           </div>
           <div className="flex gap-4">
-            <Button size="lg" variant="outline" className="flex-1" onClick={onPass}>
+            <Button size="lg" variant="outline" className="flex-1 font-['PP_Radio_Grotesk']" onClick={onPass}>
               <X className="mr-2 h-5 w-5" />
               Pass
             </Button>
-            <Button size="lg" className="flex-1" onClick={onLike}>
+            <Button size="lg" className="flex-1 font-['PP_Radio_Grotesk']" onClick={onLike}>
               <Heart className="mr-2 h-5 w-5" />
               Like
             </Button>
@@ -103,24 +103,24 @@ export default function StockDetail({ stock, onLike, onPass, status }: StockDeta
             )}
 
             <section>
-              <h2 className="font-serif text-2xl mb-4">Bio</h2>
-              <p className="text-gray-700 mb-4">{stock.description}</p>
+              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">Bio</h2>
+              <p className="text-gray-700 mb-4 font-['PP_Radio_Grotesk']">{stock.description}</p>
               <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center">
+                <div className="flex items-center font-['PP_Radio_Grotesk']">
                   <Building className="h-5 w-5 mr-2 text-gray-500" />
                   <span>Founded in {stock.foundedYear}</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center font-['PP_Radio_Grotesk']">
                   <Globe className="h-5 w-5 mr-2 text-gray-500" />
                   <a href={stock.website} className="text-blue-600 hover:underline">
                     {stock.website}
                   </a>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center font-['PP_Radio_Grotesk']">
                   <Users className="h-5 w-5 mr-2 text-gray-500" />
                   <span>{stock.employees ? stock.employees.toLocaleString() : "N/A"} Employees</span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center font-['PP_Radio_Grotesk']">
                   <DollarSign className="h-5 w-5 mr-2 text-gray-500" />
                   <span>Market Cap: ${stock.marketCap !== undefined ? formatLargeNumber(stock.marketCap) : "N/A"}</span>
                 </div>
@@ -128,7 +128,7 @@ export default function StockDetail({ stock, onLike, onPass, status }: StockDeta
             </section>
 
             <section>
-              <h2 className="font-serif text-2xl mb-4">My Recent Mood Swings</h2>
+              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">My Recent Mood Swings</h2>
               <img
                 src={stock.chartImageUrl || "/placeholder.svg"}
                 alt={`${stock.name} Stock Chart`}
@@ -137,10 +137,10 @@ export default function StockDetail({ stock, onLike, onPass, status }: StockDeta
               <div className="grid grid-cols-2 gap-4">
                 {stock.quarterlyPerformance && stock.quarterlyPerformance.map((quarter) => (
                   <div key={`${quarter.year}-${quarter.quarter}`} className="bg-gray-50 p-4 rounded-lg">
-                    <div className="font-medium">
+                    <div className="font-['PP_Radio_Grotesk']">
                       {quarter.quarter} {quarter.year}
                     </div>
-                    <div className={`flex items-center ${quarter.change >= 0 ? "text-green-600" : "text-red-600"}`}>
+                    <div className={`flex items-center ${quarter.change >= 0 ? "text-green-600" : "text-red-600"} font-['PP_Radio_Grotesk']`}>
                       {quarter.change >= 0 ? (
                         <TrendingUp className="mr-1 h-4 w-4" />
                       ) : (
@@ -154,73 +154,73 @@ export default function StockDetail({ stock, onLike, onPass, status }: StockDeta
             </section>
 
             <section>
-              <h2 className="font-serif text-2xl mb-4">More About Me</h2>
+              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">More About Me</h2>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h3 className="font-medium">CEO</h3>
-                  <p>{stock.ceo}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">CEO</h3>
+                  <p className="font-['PP_Radio_Grotesk']">{stock.ceo}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Headquarters</h3>
-                  <p>{stock.headquarters}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Headquarters</h3>
+                  <p className="font-['PP_Radio_Grotesk']">{stock.headquarters}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Industry</h3>
-                  <p>{stock.industry}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Industry</h3>
+                  <p className="font-['PP_Radio_Grotesk']">{stock.industry}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Exchanges</h3>
-                  <p>{stock.exchanges ? stock.exchanges.join(", ") : "N/A"}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Exchanges</h3>
+                  <p className="font-['PP_Radio_Grotesk']">{stock.exchanges ? stock.exchanges.join(", ") : "N/A"}</p>
                 </div>
               </div>
             </section>
 
             <section>
-              <h2 className="font-serif text-2xl mb-4">Financial Information</h2>
+              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">Financial Information</h2>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h3 className="font-medium">Report Date</h3>
-                  <p>{stock.financials ? stock.financials.reportDate : "N/A"}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Report Date</h3>
+                  <p className="font-['PP_Radio_Grotesk']">{stock.financials ? stock.financials.reportDate : "N/A"}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Revenue</h3>
-                  <p>${stock.financials ? formatLargeNumber(stock.financials.revenue ?? 0) : "N/A"}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Revenue</h3>
+                  <p className="font-['PP_Radio_Grotesk']">${stock.financials ? formatLargeNumber(stock.financials.revenue ?? 0) : "N/A"}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Net Income</h3>
-                  <p>${stock.financials ? formatLargeNumber(stock.financials.netIncome ?? 0) : "N/A"}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Net Income</h3>
+                  <p className="font-['PP_Radio_Grotesk']">${stock.financials ? formatLargeNumber(stock.financials.netIncome ?? 0) : "N/A"}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Operating Income</h3>
-                  <p>${stock.financials ? formatLargeNumber(stock.financials.operatingIncome ?? 0) : "N/A"}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Operating Income</h3>
+                  <p className="font-['PP_Radio_Grotesk']">${stock.financials ? formatLargeNumber(stock.financials.operatingIncome ?? 0) : "N/A"}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">EBITDA</h3>
-                  <p>${stock.financials ? formatLargeNumber(stock.financials.ebitda ?? 0) : "N/A"}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">EBITDA</h3>
+                  <p className="font-['PP_Radio_Grotesk']">${stock.financials ? formatLargeNumber(stock.financials.ebitda ?? 0) : "N/A"}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Total Assets</h3>
-                  <p>${stock.financials ? formatLargeNumber(stock.financials.totalAssets ?? 0) : "N/A"}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Total Assets</h3>
+                  <p className="font-['PP_Radio_Grotesk']">${stock.financials ? formatLargeNumber(stock.financials.totalAssets ?? 0) : "N/A"}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Total Liabilities</h3>
-                  <p>${stock.financials ? formatLargeNumber(stock.financials.totalLiabilities ?? 0) : "N/A"}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Total Liabilities</h3>
+                  <p className="font-['PP_Radio_Grotesk']">${stock.financials ? formatLargeNumber(stock.financials.totalLiabilities ?? 0) : "N/A"}</p>
                 </div>
                 <div>
-                  <h3 className="font-medium">Equity</h3>
-                  <p>${stock.financials ? formatLargeNumber(stock.financials.equity ?? 0) : "N/A"}</p>
+                  <h3 className="font-['PP_Radio_Grotesk'] font-medium">Equity</h3>
+                  <p className="font-['PP_Radio_Grotesk']">${stock.financials ? formatLargeNumber(stock.financials.equity ?? 0) : "N/A"}</p>
                 </div>
               </div>
             </section>
 
             <section>
-              <h2 className="font-serif text-2xl mb-4">What My Friends Are Saying</h2>
+              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">What My Friends Are Saying</h2>
               <div className="space-y-6">
                 {stock.news.map((article) => (
                   <Card key={article.id} className="overflow-hidden">
                     <CardContent className="p-0">
                       <a href={article.link} className="block">
-                        <h3 className="p-6 font-serif text-xl">{article.title}</h3>
+                        <h3 className="p-6 font-['PP_Pangaia'] text-xl">{article.title}</h3>
                         <img
                           src={article.imageUrl || "/placeholder.svg"}
                           alt=""

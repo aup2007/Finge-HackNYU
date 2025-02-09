@@ -1,4 +1,3 @@
-
 import { useState } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -26,7 +25,7 @@ export default function QuirksSection({ quirks }: QuirksSectionProps) {
 
   return (
     <div className="space-y-3">
-      <p className="text-gray-600 italic text-lg">"Looking for investors who understand that..."</p>
+      <p className="text-gray-600 italic text-lg font-['PP_Radio_Grotesk']">"Looking for investors who understand that..."</p>
       <div className="relative">
         <div className="overflow-hidden rounded-2xl">
           <div
@@ -39,31 +38,31 @@ export default function QuirksSection({ quirks }: QuirksSectionProps) {
               {quirks.map((quirk, index) => (
                 <div
                   key={index}
-                  className="w-full flex-shrink-0 p-5"
+                  className="w-full flex-shrink-0 px-14 py-5"
                   style={{ backgroundColor: quirk.backgroundColor }}
                 >
-                  <h3 className="text-xl font-semibold mb-1">{quirk.title}</h3>
-                  <p className="text-lg">{quirk.description}</p>
+                  <h3 className="text-xl font-['PP_Pangaia'] mb-1">{quirk.title}</h3>
+                  <p className="text-lg font-['PP_Radio_Grotesk']">{quirk.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </div>
         <Button
-          variant="secondary"
+          variant="ghost"
           size="icon"
-          className="absolute -left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 shadow-lg hover:bg-white"
+          className="absolute left-1 top-1/2 -translate-y-1/2 hover:bg-transparent p-0 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none outline-none ring-0 ring-offset-0"
           onClick={previousQuirk}
         >
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className="h-5 w-5 text-gray-600" />
         </Button>
         <Button
-          variant="secondary"
+          variant="ghost"
           size="icon"
-          className="absolute -right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 shadow-lg hover:bg-white"
+          className="absolute right-1 top-1/2 -translate-y-1/2 hover:bg-transparent p-0 focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none outline-none ring-0 ring-offset-0"
           onClick={nextQuirk}
         >
-          <ChevronRight className="h-6 w-6" />
+          <ChevronRight className="h-5 w-5 text-gray-600" />
         </Button>
       </div>
     </div>
