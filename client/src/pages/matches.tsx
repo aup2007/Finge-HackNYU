@@ -3,125 +3,78 @@
 import { useState, useEffect } from "react"
 import StockList from "@/components/stock-list"
 import StockDetail from "@/components/stock-detail"
-import type { StockWithNews, StockStatus, } from "@/components/types/index.ts"
+import type { StockWithNews, StockStatus } from "@/components/types/index.ts"
+import { useStockMatches, Company } from "../hooks/getStocks"
+import { Loader2 } from "lucide-react"
 
-const MOCK_STOCKS: StockWithNews[] = [
-  {
-    id: "aapl",
-    name: "Apple Inc.",
-    symbol: "AAPL",
-    price: 123.45,
+// Transform API company data to match StockWithNews type
+const transformCompanyToStock = (company: Company): StockWithNews => {
+  const POLYGON_API_KEY = import.meta.env.VITE_POLYGON_API_KEY;
+  const logoUrl = company.logo_url ? `${company.logo_url}?apiKey=${POLYGON_API_KEY}` : '';
+
+  return {
+    id: company.id || company.ticker, // Fallback to ticker if id is not available
+    name: company.company,
+    symbol: company.ticker,
+    price: company.close,
     currency: "USD",
-    trend: "up",
-    category: "Technology",
-    logo: "/placeholder.svg?height=80&width=80",
-    description:
-      "Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide.",
-    foundedYear: 1976,
-    quarterlyPerformance: [
-      { quarter: "Q1", year: 2023, change: 5.2 },
-      { quarter: "Q4", year: 2022, change: -3.1 },
-      { quarter: "Q3", year: 2022, change: 2.8 },
-      { quarter: "Q2", year: 2022, change: 1.5 },
-    ],
-    exchanges: ["NASDAQ"],
-    chartImageUrl: "/placeholder.svg?height=150&width=300",
-    news: [
-      {
-        id: "1",
-        title: "Apple Stock Jumps on Artificial Intelligence (AI) Driving iPhone Sales",
-        imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-GwqzinYwQULe6sBzRQbotDdTBU0IMv.png",
-        link: "#",
-      },
-      {
-        id: "2",
-        title: "Experts Predict How High Apple Stock Could Go in 2023",
-        imageUrl: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-GwqzinYwQULe6sBzRQbotDdTBU0IMv.png",
-        link: "#",
-      },
-    ],
+    trend: company.price_change > 0 ? "up" : "down",
+    category: company.industry,
+    logo: logoUrl,
+    description: company.description,
+    foundedYear: company.founding_date ? new Date(company.founding_date).getFullYear() : undefined,
+    quarterlyPerformance: [], // This could be added to the API if needed
+    exchanges: ["NASDAQ"], // This could be added to the API if needed
+    chartImageUrl: "/placeholder.svg?height=300&width=500", // This could be added to the API if needed
+    news: [], // This could be added to the API if needed
     financials: {
-      reportDate: "2023-03-31",
-      revenue: 94836000000,
-      netIncome: 24160000000,
-      operatingIncome: 28313000000,
-      ebitda: 33116000000,
-      totalAssets: 335033000000,
-      totalLiabilities: 234955000000,
-      equity: 100078000000,
+      reportDate: company.report_date,
+      revenue: company.revenue,
+      netIncome: typeof company.net_income === 'number' ? company.net_income : 0,
+      operatingIncome: typeof company.operating_income === 'number' ? company.operating_income : 0,
+      ebitda: typeof company.ebitda === 'number' ? company.ebitda : 0,
+      totalAssets: company.total_assets,
+      totalLiabilities: company.total_liabilities,
+      equity: company.equity,
     },
-    industry: "Consumer Electronics",
-    marketCap: 2500000000000,
-    ceo: "Tim Cook",
-    headquarters: "Cupertino, California, United States",
-    website: "https://www.apple.com",
-    employees: 164000,
-  },
-  {
-    id: "msft",
-    name: "Microsoft Inc.",
-    symbol: "MSFT",
-    price: 234.56,
-    currency: "USD",
-    trend: "up",
-    category: "Technology",
-    logo: "/placeholder.svg?height=80&width=80",
-    description:
-      "Microsoft Corporation develops, licenses, and supports software, services, devices, and solutions worldwide. Its segments include Productivity and Business Processes, which offers Microsoft 365, Dynamics 365, LinkedIn, and Power Platform; Intelligent Cloud, which includes Azure, server products and cloud services, and Enterprise Services; and More Personal Computing, which comprises Windows, Windows Server, and gaming.",
-    foundedYear: 1975,
-    quarterlyPerformance: [
-      { quarter: "Q1", year: 2023, change: 7.1 },
-      { quarter: "Q4", year: 2022, change: 2.3 },
-      { quarter: "Q3", year: 2022, change: 4.8 },
-      { quarter: "Q2", year: 2022, change: 3.5 },
+    industry: company.industry,
+    marketCap: company.market_cap,
+    ceo: company.ceo,
+    headquarters: company.headquarters,
+    website: company.website,
+    employees: company.employees,
+    opinions: [
+      company.opinion_1,
+      company.opinion_2,
+      company.opinion_3,
     ],
-    exchanges: ["NASDAQ"],
-    chartImageUrl: "/placeholder.svg?height=300&width=500",
-    news: [
-      {
-        id: "3",
-        title: "Microsoft's AI Innovations Boost Stock Performance",
-        imageUrl: "/placeholder.svg?height=200&width=400",
-        link: "#",
-      },
-    ],
-  },
-  {
-    id: "amzn",
-    name: "Amazon Inc.",
-    symbol: "AMZN",
-    price: 345.67,
-    currency: "USD",
-    trend: "down",
-    category: "E-commerce",
-    logo: "/placeholder.svg?height=80&width=80",
-    description:
-      "Amazon.com, Inc. engages in the retail sale of various products and services through its online stores. It operates through three segments: North America, International, and Amazon Web Services (AWS). The company offers products such as consumer electronics, apparel, books, and groceries.",
-    foundedYear: 1994,
-    quarterlyPerformance: [
-      { quarter: "Q1", year: 2023, change: -1.2 },
-      { quarter: "Q4", year: 2022, change: 0.5 },
-      { quarter: "Q3", year: 2022, change: -2.8 },
-      { quarter: "Q2", year: 2022, change: 1.1 },
-    ],
-    exchanges: ["NASDAQ"],
-    chartImageUrl: "/placeholder.svg?height=300&width=500",
-    news: [
-      {
-        id: "4",
-        title: "Amazon Expands Drone Delivery, Stock Reacts",
-        imageUrl: "/placeholder.svg?height=200&width=400",
-        link: "#",
-      },
-    ],
-  },
-]
+    marketData: {
+      open: company.open,
+      high: company.high,
+      low: company.low,
+      close: company.close,
+      volume: company.volume,
+      afterHours: company.afterHours,
+      preMarket: company.preMarket,
+      date: company.date,
+    }
+  }
+}
 
 export default function StockTracker() {
-  const [stockQueue, setStockQueue] = useState<StockWithNews[]>(MOCK_STOCKS)
+  const { data: companies, isLoading, error } = useStockMatches()
+  const [stockQueue, setStockQueue] = useState<StockWithNews[]>([])
   const [currentStock, setCurrentStock] = useState<StockWithNews | null>(null)
   const [stockStatus, setStockStatus] = useState<StockStatus>("neutral")
   const [likedStocks, setLikedStocks] = useState<StockWithNews[]>([])
+
+  // Update stock queue when companies data is loaded
+  useEffect(() => {
+    if (companies) {
+      const transformedStocks = companies.map(transformCompanyToStock)
+      setStockQueue(transformedStocks)
+    }
+  }, [companies])
 
   useEffect(() => {
     if (stockQueue.length > 0 && !currentStock) {
@@ -143,6 +96,22 @@ export default function StockTracker() {
     }, 500)
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-red-500">Error loading matches. Please try again later.</p>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen relative flex flex-col">
       <div 
@@ -159,13 +128,17 @@ export default function StockTracker() {
           <StockList stocks={likedStocks} onSelectStock={() => {}} />
         </div>
         <div className="flex-1 bg-white rounded-t-[50px] shadow-lg overflow-hidden flex flex-col">
-          {currentStock && (
+          {currentStock ? (
             <StockDetail
               stock={currentStock}
               onLike={() => handleAction("like")}
               onPass={() => handleAction("pass")}
               status={stockStatus}
             />
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-gray-500">No more matches available.</p>
+            </div>
           )}
         </div>
       </div>

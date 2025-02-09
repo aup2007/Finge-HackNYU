@@ -11,9 +11,16 @@ export interface Stock {
 
 export interface NewsArticle {
   id?: string;
+  _id?: string;  // MongoDB ID
+  company?: string;
+  ticker?: string;
   title?: string;
-  imageUrl?: string;
-  link?: string;
+  description?: string;
+  url?: string;
+  urlToImage?: string;
+  publishedAt?: string;
+  source?: string;
+  retrievedAt?: string;
 }
 
 export interface Financials {
@@ -25,6 +32,22 @@ export interface Financials {
   totalAssets?: number;
   totalLiabilities?: number;
   equity?: number;
+}
+
+export interface Opinion {
+  heading: string;
+  content: string;
+}
+
+export interface MarketData {
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+  afterHours: number;
+  preMarket: number;
+  date: string;
 }
 
 export interface StockWithNews extends Stock {
@@ -45,6 +68,8 @@ export interface StockWithNews extends Stock {
   headquarters?: string;
   website?: string;
   employees?: number;
+  opinions?: Opinion[];
+  marketData?: MarketData;
 }
 
 export type StockStatus = "neutral" | "liked" | "passed";
@@ -54,5 +79,4 @@ export interface StockDetailProps {
   onLike: () => void;
   onPass: () => void;
   status: StockStatus;
-  
 }

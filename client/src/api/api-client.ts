@@ -47,6 +47,44 @@ class APIClient<T> {
     );
     return response.data;
   };
+
+  getCurrentUser = async (token: string) => {
+    const response = await axiosInstance.get<T>(
+      "/users/current_user",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  };
+
+  getCompanyMatches = async (token: string) => {
+    const response = await axiosInstance.post<T>(
+      "/data/companies/by-preferences",
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  };
+
+  getNewsArticles = async (ticker: string, token: string) => {
+    const response = await axiosInstance.get<T>(
+      `/data/news/${ticker}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  };
 }
 
 export default APIClient;

@@ -11,10 +11,12 @@ import {
   Users,
   DollarSign,
   Building,
+  Loader2,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { motion, AnimatePresence } from "framer-motion";
 import QuirksSection from "./quirks-section";
+import { useNewsArticles } from "@/hooks/useNewsArticles";
 
 interface StockDetailProps {
   stock: StockWithNews;
@@ -24,29 +26,25 @@ interface StockDetailProps {
 }
 
 const getQuirksForStock = (stock: StockWithNews) => {
-  switch (stock.symbol) {
-    case "AAPL":
-      return [
-        {
-          title: "I Can Be High Maintenance",
-          description: "My products aren't cheap, but I believe I'm worth it!",
-          backgroundColor: "rgb(255, 245, 238)",
-        },
-        {
-          title: "I'm Kind of a Control Freak",
-          description: "I like my ecosystem closed and my standards high",
-          backgroundColor: "rgb(247, 237, 255)",
-        },
-        {
-          title: "Drama Follows Me",
-          description:
-            "You'll see regular headlines and mood swings in my stock price",
-          backgroundColor: "rgb(237, 245, 255)",
-        },
-      ];
-    default:
-      return [];
-  }
+  if (!stock.opinions) return [];
+  
+  return [
+    {
+      title: stock.opinions[0].heading,
+      description: stock.opinions[0].content,
+      backgroundColor: "rgb(255, 245, 238)",
+    },
+    {
+      title: stock.opinions[1].heading,
+      description: stock.opinions[1].content,
+      backgroundColor: "rgb(247, 237, 255)",
+    },
+    {
+      title: stock.opinions[2].heading,
+      description: stock.opinions[2].content,
+      backgroundColor: "rgb(237, 245, 255)",
+    },
+  ];
 };
 
 export default function StockDetail({
@@ -55,6 +53,8 @@ export default function StockDetail({
   onPass,
   status,
 }: StockDetailProps) {
+  const { data: newsArticles, isLoading: isLoadingNews } = useNewsArticles(stock.symbol || "");
+
   const variants = {
     liked: { x: "100%", opacity: 0, transition: { duration: 0.5 } },
     passed: { y: "100%", opacity: 0, transition: { duration: 0.5 } },
@@ -109,7 +109,7 @@ export default function StockDetail({
             <img
               src={stock.logo || "/placeholder.svg"}
               alt={stock.name}
-              className="h-24 w-24 rounded-full bg-black"
+              className="h-28 w-28 rounded-lg bg-transparent p-6 object-contain"
             />
           </div>
           <div className="flex gap-4">
@@ -180,47 +180,7 @@ export default function StockDetail({
             </section>
 
             <section>
-              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">
-                My Recent Mood Swings
-              </h2>
-              <img
-                src={stock.chartImageUrl || "/placeholder.svg"}
-                alt={`${stock.name} Stock Chart`}
-                className="w-full h-[150px] object-cover rounded-lg shadow-md mb-4"
-              />
-              <div className="grid grid-cols-2 gap-4">
-                {stock.quarterlyPerformance &&
-                  stock.quarterlyPerformance.map((quarter) => (
-                    <div
-                      key={`${quarter.year}-${quarter.quarter}`}
-                      className="bg-gray-50 p-4 rounded-lg"
-                    >
-                      <div className="font-['PP_Radio_Grotesk']">
-                        {quarter.quarter} {quarter.year}
-                      </div>
-                      <div
-                        className={`flex items-center ${
-                          quarter.change >= 0
-                            ? "text-green-600"
-                            : "text-red-600"
-                        } font-['PP_Radio_Grotesk']`}
-                      >
-                        {quarter.change >= 0 ? (
-                          <TrendingUp className="mr-1 h-4 w-4" />
-                        ) : (
-                          <TrendingDown className="mr-1 h-4 w-4" />
-                        )}
-                        {quarter.change}%
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </section>
-
-            <section>
-              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">
-                More About Me
-              </h2>
+              <h2 className="font-['PP_Pangaia'] text-2xl mb-4">More About Me</h2>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-['PP_Radio_Grotesk'] font-medium">CEO</h3>
@@ -351,22 +311,30 @@ export default function StockDetail({
                 What My Friends Are Saying
               </h2>
               <div className="space-y-6">
-                {stock.news.map((article) => (
-                  <Card key={article.id} className="overflow-hidden">
-                    <CardContent className="p-0">
-                      <a href={article.link} className="block">
-                        <h3 className="p-6 font-['PP_Pangaia'] text-xl">
-                          {article.title}
-                        </h3>
-                        <img
-                          src={article.imageUrl || "/placeholder.svg"}
-                          alt=""
-                          className="h-[150px] w-full object-cover"
-                        />
-                      </a>
-                    </CardContent>
-                  </Card>
-                ))}
+                {isLoadingNews ? (
+                  <div className="flex justify-center py-8">
+                    <Loader2 className="w-6 h-6 animate-spin" />
+                  </div>
+                ) : newsArticles && newsArticles.length > 0 ? (
+                  newsArticles.map((article) => (
+                    <Card key={article.id} className="overflow-hidden">
+                      <CardContent className="p-0">
+                        <a href={article.url || ""} className="block">
+                          <h3 className="p-6 font-['PP_Pangaia'] text-xl">
+                            {article.title}
+                          </h3>
+                          <img
+                            src={article.urlToImage || "/placeholder.svg"}
+                            alt=""
+                            className="h-[150px] w-full object-cover"
+                          />
+                        </a>
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <p className="text-gray-500 text-center py-8">No news articles available.</p>
+                )}
               </div>
             </section>
           </div>
