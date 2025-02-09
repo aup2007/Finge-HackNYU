@@ -28,6 +28,7 @@ async def signup(user: schemas.UserCreate, db: AsyncIOMotorDatabase = Depends(ge
     user_dict = user.model_dump()
     user_dict["password"] = hashed_password
     user_dict["created_at"] = datetime.now()
+    user_dict["categories"] = []
 
     # Insert into database
     result = await db.Users.insert_one(user_dict)
