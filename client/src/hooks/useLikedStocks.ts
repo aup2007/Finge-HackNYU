@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../api/api-client";
 import { useAuth } from "./useAuth";
-import { LikedStock, Stock } from "../interfaces";
+import { LikedStock, Stock } from "../Interfaces";
 
 const apiClient = new APIClient<LikedStock[]>(
   "/users/current_user/liked-stocks"

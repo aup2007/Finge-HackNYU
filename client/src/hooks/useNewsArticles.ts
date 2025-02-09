@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../api/api-client";
 import { useAuth } from "./useAuth";
-import { NewsResponse } from "@/interfaces";
+import { NewsResponse } from "@/Interfaces";
 
 const apiClient = new APIClient<NewsResponse>("/data/news");
 

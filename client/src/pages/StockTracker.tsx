@@ -6,8 +6,9 @@ import StockDetail from "@/components/stock-detail";
 import { useStockMatches } from "../hooks/useStockMatches";
 import { useLikedStocks } from "../hooks/useLikedStocks";
 import useUpdateLiked from "../hooks/useUpdatedLiked";
+import useGetStockDetails from "../hooks/useGetStockDetails";
 import { Loader2 } from "lucide-react";
-import type { StockWithNews, StockStatus, Stock, Company } from "@/interfaces";
+import type { StockWithNews, StockStatus, Stock, Company } from "@/Interfaces";
 
 // Transform API company data to match StockWithNews type
 const transformCompanyToStock = (company: Company): StockWithNews => {
@@ -77,8 +78,10 @@ export default function StockTracker() {
   const [currentStock, setCurrentStock] = useState<StockWithNews | null>(null);
   const [stockStatus, setStockStatus] = useState<StockStatus>("neutral");
   const [selectedLikedStock, setSelectedLikedStock] = useState<StockWithNews | null>(null);
+  const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
+  const { data: stockDetails, isLoading: isLoadingDetails } = useGetStockDetails(selectedTicker || "");
 
-  // Update stock queue when companies data is loaded
+  // Transform companies data when loaded
   useEffect(() => {
     if (companies) {
       const transformedStocks = companies.map(transformCompanyToStock);
@@ -93,17 +96,23 @@ export default function StockTracker() {
     }
   }, [stockQueue, currentStock, selectedLikedStock]);
 
+  useEffect(() => {
+    if (stockDetails) {
+      setSelectedLikedStock(transformCompanyToStock(stockDetails));
+    }
+  }, [stockDetails]);
+
   const handleAction = async (action: "like" | "pass") => {
     setStockStatus(action === "like" ? "liked" : "passed");
 
     if (action === "like" && currentStock) {
       try {
         await updateLiked.mutateAsync({
-          ticker: currentStock.symbol || "",
+          ticker: currentStock.symbol || currentStock.id || "",
           imageUrl: currentStock.logo || "",
           company: currentStock.name || "",
-          close: currentStock.marketData?.close || 0,
-          open: currentStock.marketData?.open || 0,
+          close: currentStock.marketData?.close || currentStock.close || 0,
+          open: currentStock.marketData?.open || currentStock.open || 0,
         });
       } catch (error) {
         console.error("Failed to like stock:", error);
@@ -117,36 +126,15 @@ export default function StockTracker() {
   };
 
   const handleSelectLikedStock = (stock: Stock) => {
-    // First try to find the stock in the companies data for full details
-    const fullStockDetails = companies?.find(company => company.ticker === stock.symbol);
-    
-    if (fullStockDetails) {
-      setSelectedLikedStock(transformCompanyToStock(fullStockDetails));
-    } else {
-      // If not found in companies, create a StockWithNews from the liked stock data
-      setSelectedLikedStock({
-        ...stock,
-        news: [],
-        description: "",
-        open: 0,
-        close: 0,
-        marketData: {
-          open: 0,
-          high: 0,
-          low: 0,
-          close: stock.price || 0,
-          volume: 0,
-          afterHours: 0,
-          preMarket: 0,
-          date: new Date().toISOString(),
-        }
-      });
+    const ticker = stock.symbol || stock.id;
+    if (ticker) {
+      setSelectedTicker(ticker);
     }
-    setCurrentStock(null);
   };
 
   const handleBackToDiscovery = () => {
     setSelectedLikedStock(null);
+    setSelectedTicker(null);
   };
 
   if (isLoading) {
@@ -183,7 +171,11 @@ export default function StockTracker() {
           <StockList stocks={likedStocks || []} onSelectStock={handleSelectLikedStock} />
         </div>
         <div className="flex-1 bg-white rounded-t-[50px] shadow-lg overflow-hidden flex flex-col">
-          {selectedLikedStock ? (
+          {isLoadingDetails ? (
+            <div className="flex items-center justify-center h-full">
+              <Loader2 className="w-8 h-8 animate-spin" />
+            </div>
+          ) : selectedLikedStock ? (
             <StockDetail
               stock={selectedLikedStock}
               onBack={handleBackToDiscovery}

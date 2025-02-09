@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChatMessage, ChatResponse } from "@/interfaces";
+import { ChatMessage, ChatResponse } from "@/Interfaces";
 import { Send } from "lucide-react";
 import APIClient from "@/api/api-client";
 import { useAuth } from "@/hooks/useAuth";

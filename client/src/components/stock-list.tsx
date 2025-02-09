@@ -1,5 +1,4 @@
-import type { Stock } from "@/interfaces";
-import { Filter } from "lucide-react";
+import type { Stock } from "@/Interfaces";
 import { useState } from "react";
 import ChatBox from "./chat-box";
 import { ScrollArea } from "@/components/ui/scroll-area";

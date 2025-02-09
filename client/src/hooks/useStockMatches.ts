@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import APIClient from "../api/api-client";
 import { useAuth } from "./useAuth";
-import { StockResponse } from "@/interfaces";
+import { StockResponse } from "@/Interfaces";
 
 const apiClient = new APIClient<StockResponse>(
   "/data/companies/by-preferences"

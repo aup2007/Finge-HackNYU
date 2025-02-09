@@ -7,7 +7,7 @@ import {
   AuthProviderProps,
   User,
   LoginData,
-} from "../interfaces";
+} from "../Interfaces";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 

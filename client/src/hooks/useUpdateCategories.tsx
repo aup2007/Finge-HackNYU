@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import APIClient from "../api/api-client";
 import { useAuth } from "./useAuth";
-import { UpdateCategoriesResponse } from "@/interfaces";
+import { UpdateCategoriesResponse } from "@/Interfaces";
 
 const apiClient = new APIClient<UpdateCategoriesResponse>(
   "/users/current_user/update_categories"

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import APIClient from "../api/api-client";
 import { useAuth } from "./useAuth";
-import { UpdateLikedResponse, LikedStock } from "@/interfaces";
+import { UpdateLikedResponse, LikedStock } from "@/Interfaces";
 
 const apiClient = new APIClient<UpdateLikedResponse>(
   "/users/current_user/liked-stocks"

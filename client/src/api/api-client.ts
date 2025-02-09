@@ -1,4 +1,4 @@
-import { LikedStock } from "@/interfaces";
+import { LikedStock } from "@/Interfaces";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -131,6 +131,15 @@ class APIClient<T> {
         }
       )
       .then((res) => res.data);
+  };
+
+  getStockDetails = async (ticker: string, token: string) => {
+    const response = await axiosInstance.get<T>(`${this.endpoint}/${ticker}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
   };
 }
 

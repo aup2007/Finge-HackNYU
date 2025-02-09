@@ -2,7 +2,7 @@
 import type {
   StockWithNews,
   StockStatus,
-} from "@/interfaces";
+} from "@/Interfaces";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
