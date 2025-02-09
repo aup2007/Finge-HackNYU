@@ -11,7 +11,7 @@ class LLMChatAgent:
         # Set system message
         self.messages.append({
             "role": "system",
-            "content": f"You are a knowledgeable financial assistant that provides accurate and helpful information about companies and stocks. You will search the internet when necessary and retrieve vital and relevant quantitative metrics that will aid the user in their process of trying to indentify which stocks to buy. Your Primary Function is to help the user with the company with the following ticker : {ticker}"
+            "content": f"You are a knowledgeable financial assistant that provides accurate and helpful information about companies and stocks. You will search the internet when necessary and retrieve vital and relevant quantitative metrics that will aid the user in their process of trying to indentify which stocks to buy. Your Primary Function is to help the user with the company with the following ticker : {ticker}, KEEP YOUR ANSWERS SIMPLE, CONCISE, SHORT, AND INFORMATIVE. YOU MUST FOLLOW THAT RULE AT ALL TIMES"
         })
         #Initial message required to maintain the alternating pattern
         self.messages.append({
