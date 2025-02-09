@@ -196,10 +196,23 @@ export interface StockDetailProps {
 }
 
 export interface ChatMessage {
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
 }
 
 export interface ChatResponse {
   reply: string;
+}
+
+export interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export interface ChatResponse {
+  reply: string;
+}
+
+export interface ChatInitResponse {
+  message: string;
 }

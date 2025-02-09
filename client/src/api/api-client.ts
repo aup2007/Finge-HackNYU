@@ -3,7 +3,7 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000",
-  timeout: 10000,
+  timeout: 100000,
 });
 
 class APIClient<T> {
@@ -96,20 +96,6 @@ class APIClient<T> {
           close: stock.close,
           open: stock.open,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((res) => res.data);
-  };
-
-  initializeChat = (ticker: string, token: string) => {
-    return axiosInstance
-      .post<T>(
-        `${this.endpoint}/${ticker}/initialize`,
-        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
