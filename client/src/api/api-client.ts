@@ -35,9 +35,9 @@ class APIClient<T> {
   };
 
   updateCategories = async (categories: string[], token: string) => {
-    const response = await axiosInstance.post<T>(
+    const response = await axiosInstance.put<T>(
       this.endpoint,
-      { preferences: categories },
+      { categories: categories },
       {
         headers: {
           "Content-Type": "application/json",

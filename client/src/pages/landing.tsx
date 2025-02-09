@@ -7,6 +7,7 @@ import { Logo } from "../components/ui/logo"
 import { useEffect, useRef } from "react"
 import AppleLogo from "../assets/apple.png"
 import NetflixLogo from "../assets/netflix.png"
+import GoldmanLogo from "../assets/gs.png"
 import Typed from 'typed.js'
 
 type TypedOptions = {
@@ -96,6 +97,28 @@ export default function LandingPage() {
             <p className="text-sm mt-2 text-slate-600 font-['PP_Radio_Grotesk']">
               A tech leader driving innovation with mobile phones, AI, and a high-margin services ecosystem, making it a
               strong long-term investment.
+            </p>
+          </Card>
+
+          <Card className="absolute left-1/2 top-2 -translate-x-1/2 transform rotate-0 w-72 p-4 bg-white/90 backdrop-blur">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-[28px] font-['PP_Pangaia']">Goldman Sachs</h3>
+                <div className="flex items-center gap-2">
+                  <span className="font-['PP_Radio_Grotesk']">GS</span>
+                  <span className="text-green-500 font-['PP_Radio_Grotesk']">+3.21 (0.85%)</span>
+                </div>
+              </div>
+              <div className="bg-black rounded-full p-2">
+                <img
+                  src={GoldmanLogo}
+                  alt="Goldman Sachs logo"
+                  className="w-8 h-8"
+                />
+              </div>
+            </div>
+            <p className="text-sm mt-2 text-slate-600 font-['PP_Radio_Grotesk']">
+              A leading global investment bank known for financial advisory, securities, and investment management services with a strong track record.
             </p>
           </Card>
 
