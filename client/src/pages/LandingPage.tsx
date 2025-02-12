@@ -210,10 +210,11 @@ export default function LandingPage() {
           </Link>
         </div>
       </div>
+      
 
       {/* About Section */}
       <motion.div
-        className="w-full bg-white mt-36 py-24 relative z-10"
+        className="w-full bg-white mt-48 py-24 relative z-10"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
@@ -246,6 +247,25 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+      </motion.div>
+
+      {/* Footer */}
+      <motion.div
+        className="w-full bg-black/5 backdrop-blur py-8 relative z-10 mt-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2 }}
+      >
+        <p className="text-center text-slate-600 font-['PP_Radio_Grotesk']">
+          <a
+            href="https://devpost.com/software/fin-ge"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-slate-900 hover:underline underline-offset-4 transition-colors"
+          >
+            See how we made this in &lt;24 hours.
+          </a>
+        </p>
       </motion.div>
     </motion.main>
   );
