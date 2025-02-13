@@ -6,13 +6,14 @@ import LoginPage from "./pages/LoginPage.tsx";
 import StockTracker from "./pages/StockTracker.tsx";
 import SelectionPage from "./pages/SelectionPage.tsx";
 import PrivateRoute from "./pages/PrivateRoute.tsx";
-
+import AuthGateway from "./pages/AuthGateway.tsx";
 export default function App() {
   return (
     <AuthProvider>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/auth-gateway" element={<AuthGateway />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<AccountCreation />} />
 

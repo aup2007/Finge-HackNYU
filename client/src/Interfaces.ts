@@ -172,11 +172,12 @@ export interface User {
 }
 
 export interface AuthContextType {
-  user: User | null;
   token: string;
+  user: User | null;
   loginAction: (data: LoginData) => Promise<void>;
   logOut: () => void;
   error: Error | AxiosError | null;
+  clearError: () => void;
 }
 
 export interface LoginData {

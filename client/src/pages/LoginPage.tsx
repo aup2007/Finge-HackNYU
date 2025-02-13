@@ -5,7 +5,7 @@ import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Label } from "../components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, LogIn } from "lucide-react";
 import { Logo } from "../components/ui/logo";
 import { motion } from "framer-motion";
@@ -15,14 +15,19 @@ import { isAxiosError } from "axios";
 export default function LoginPage() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-  const { loginAction, error } = useAuth();
+  const navigate = useNavigate();
+  const { loginAction, error, clearError } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const username = usernameRef.current?.value || "";
     const password = passwordRef.current?.value || "";
-    console.log("Form submitted:", { username, password });
-    loginAction({ username, password });
+    try {
+      await loginAction({ username, password });
+      navigate("/matches");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -59,7 +64,7 @@ export default function LoginPage() {
             <div className="text-center space-y-2">
               <Logo size="sm" className="text-3xl md:text-4xl" />
             </div>
-            {/* Logo */}
+            {/* Greeting */}
             <div className="text-center space-y-6">
               <p className="text-5xl font-['PP_Pangaia'] italic">
                 welcome back.
@@ -83,6 +88,7 @@ export default function LoginPage() {
                   type="text"
                   placeholder="Enter your email"
                   required
+                  onFocus={() => clearError()}
                 />
               </div>
               <div className="space-y-2 w-96 mx-auto">
@@ -100,6 +106,7 @@ export default function LoginPage() {
                   type="password"
                   placeholder="Enter your password"
                   required
+                  onFocus={() => clearError()}
                 />
               </div>
               <div className="flex justify-center">
@@ -118,7 +125,7 @@ export default function LoginPage() {
               <div className="text-red-500 text-center font-['PP_Radio_Grotesk']">
                 {isAxiosError(error) && error.response?.status === 403
                   ? "Incorrect email or password. Please try again."
-                  : error.message?.toLowerCase().includes("user")}
+                  : error.message}
               </div>
             )}
 

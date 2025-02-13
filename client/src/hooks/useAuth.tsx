@@ -1,5 +1,4 @@
 import { createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useLogin from "./useLogin";
 import { AxiosError } from "axios";
 import {
@@ -17,23 +16,19 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.getItem("site") || ""
   );
   const [error, setError] = useState<Error | AxiosError | null>(null);
-  const navigate = useNavigate();
-  const { mutate: login } = useLogin();
+  const { mutateAsync: login } = useLogin();
 
   const loginAction = async (data: LoginData): Promise<void> => {
-    login(data, {
-      onSuccess: (response) => {
-        setUser({ id: response.user_id });
-        setToken(response.access_token);
-        localStorage.setItem("site", response.access_token);
-        navigate("/selection");
-      },
-      onError: (error) => {
-        console.error("Login failed:", error);
-        setError(error);
-        throw error;
-      },
-    });
+    try {
+      const response = await login(data);
+      setUser({ id: response.user_id });
+      setToken(response.access_token);
+      localStorage.setItem("site", response.access_token);
+    } catch (error: unknown) {
+      console.error("Login failed:", error);
+      setError(error as Error);
+      throw error; // propagate the error so the login page can handle it
+    }
   };
 
   const logOut = (): void => {
@@ -41,11 +36,17 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     setToken("");
     setError(null);
     localStorage.removeItem("site");
-    navigate("/");
+    // Removed navigation call here
+  };
+
+  const clearError = (): void => {
+    setError(null);
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, loginAction, logOut, error }}>
+    <AuthContext.Provider
+      value={{ token, user, loginAction, logOut, error, clearError }}
+    >
       {children}
     </AuthContext.Provider>
   );

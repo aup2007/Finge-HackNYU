@@ -28,10 +28,15 @@ export default function AccountCreation() {
     createUser(
       { username, password },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
           console.log("Signup successful:", data);
           auth.logOut();
-          navigate("/login");
+          try {
+            await auth.loginAction({ username, password });
+            navigate("/selection");
+          } catch (error) {
+            console.error("Authentication failed after signup:", error);
+          }
         },
         onError: (error) => {
           console.error("Signup failed:", error);

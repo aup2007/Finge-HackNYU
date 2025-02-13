@@ -192,7 +192,7 @@ export default function LandingPage() {
               </style>
             </motion.div>
           </div>
-          <Link to="/signup">
+          <Link to="/auth-gateway">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -210,7 +210,6 @@ export default function LandingPage() {
           </Link>
         </div>
       </div>
-      
 
       {/* About Section */}
       <motion.div

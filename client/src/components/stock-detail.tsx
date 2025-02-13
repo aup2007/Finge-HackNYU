@@ -1,8 +1,5 @@
 //Reformat the stock to match the server-side values
-import type {
-  StockWithNews,
-  StockStatus,
-} from "@/Interfaces";
+import type { StockWithNews, StockStatus } from "@/Interfaces";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,7 +25,7 @@ interface StockDetailProps {
   onPass?: () => void;
   onBack?: () => void;
   status: StockStatus;
-  mode: 'discovery' | 'view';
+  mode: "discovery" | "view";
 }
 
 const getQuirksForStock = (stock: StockWithNews) => {
@@ -122,7 +119,7 @@ export default function StockDetail({
             />
           </div>
           <div className="flex gap-4">
-            {mode === 'discovery' ? (
+            {mode === "discovery" ? (
               <>
                 <Button
                   size="lg"
@@ -341,8 +338,8 @@ export default function StockDetail({
                     <Loader2 className="w-6 h-6 animate-spin" />
                   </div>
                 ) : newsArticles && newsArticles.length > 0 ? (
-                  newsArticles.map((article) => (
-                    <Card key={article.id} className="overflow-hidden">
+                  newsArticles.map((article, index) => (
+                    <Card key={article.id || index} className="overflow-hidden">
                       <CardContent className="p-0">
                         <a href={article.url || ""} className="block">
                           <h3 className="p-6 font-['PP_Pangaia'] text-xl">
