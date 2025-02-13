@@ -66,7 +66,7 @@ export default function AccountCreation() {
         <Card className="w-full bg-white/95 backdrop-blur shadow-xl rounded-t-[50px] h-[calc(100vh-1rem)] mt-4">
           <CardContent className="p-12 space-y-10">
             {/* Back Button */}
-            <Link to="/" className="block mb-4">
+            <Link to="/auth-gateway" className="block mb-4">
               <Button
                 variant="ghost"
                 size="sm"
@@ -94,7 +94,7 @@ export default function AccountCreation() {
                     htmlFor="username"
                     className="font-['PP_Radio_Grotesk'] text-lg font-bold"
                   >
-                    What is your email?
+                    Enter your email.
                   </Label>
                 </div>
                 <Input
@@ -111,7 +111,7 @@ export default function AccountCreation() {
                     htmlFor="password"
                     className="font-['PP_Radio_Grotesk'] text-lg font-bold"
                   >
-                    Please set a strong password.
+                    Create a strong password.
                   </Label>
                 </div>
                 <Input

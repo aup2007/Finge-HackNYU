@@ -51,7 +51,7 @@ export default function LoginPage() {
         <Card className="w-full bg-white/95 backdrop-blur shadow-xl rounded-t-[50px] h-[calc(100vh-1rem)] mt-4">
           <CardContent className="p-12 space-y-10">
             {/* Back Button */}
-            <Link to="/" className="block mb-4">
+            <Link to="/auth-gateway" className="block mb-4">
               <Button
                 variant="ghost"
                 size="sm"

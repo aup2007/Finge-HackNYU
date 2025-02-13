@@ -74,7 +74,7 @@ export default function SelectionPage() {
               <img
                 src="/illustration.svg"
                 alt="Person working at desk with laptop"
-                className="w-52 h-52"
+                className="w-52 h-52 scale-200"
               />
             </div>
 
