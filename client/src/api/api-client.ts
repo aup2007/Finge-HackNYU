@@ -37,6 +37,14 @@ class APIClient<T> {
     });
     return response.data;
   };
+  getUserCategories = async (token: string) => {
+    const response = await axiosInstance.get<T>(this.endpoint, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  };
 
   updateCategories = async (categories: string[], token: string) => {
     if (categories.length === 0) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
@@ -11,25 +11,35 @@ import { Logo } from "../components/ui/logo";
 import { motion } from "framer-motion";
 import { useAuth } from "../hooks/useAuth";
 import { isAxiosError } from "axios";
+import { useGetUserCategories } from "../hooks/useGetUserCategories";
 
 export default function LoginPage() {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const { loginAction, error, clearError } = useAuth();
-
+  const { loginAction, error, clearError, logOut } = useAuth();
+  const { data: userCategories, isLoading } = useGetUserCategories();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const username = usernameRef.current?.value || "";
     const password = passwordRef.current?.value || "";
     try {
+      logOut();
       await loginAction({ username, password });
-      navigate("/matches");
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
+  useEffect(() => {
+    if (!isLoading && userCategories) {
+      if (userCategories.length === 0) {
+        navigate("/selection");
+      } else {
+        navigate("/matches");
+      }
+    }
+  }, [userCategories, isLoading, navigate]);
   return (
     <motion.main
       initial={{ opacity: 0 }}
