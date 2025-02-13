@@ -9,6 +9,7 @@ import AppleLogo from "../assets/apple.png";
 import NetflixLogo from "../assets/netflix.png";
 import GoldmanLogo from "../assets/gs.png";
 import Typed from "typed.js";
+import { useAuth } from "../hooks/useAuth";
 
 type TypedOptions = {
   strings: string[];
@@ -25,7 +26,7 @@ type TypedOptions = {
 function useTyped(options: TypedOptions) {
   const elementRef = useRef<HTMLSpanElement>(null);
   const typedRef = useRef<Typed | null>(null);
-
+  const auth = useAuth();
   useEffect(() => {
     if (elementRef.current) {
       typedRef.current = new Typed(elementRef.current, options);
